@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "RxSwift Observable之Just"
+title: "RxSwift Observable之Empty,Map的实现"
 date: 2016-01-13 09:32:34 +0800
 comments: true
 categories: 
