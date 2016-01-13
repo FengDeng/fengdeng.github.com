@@ -7,8 +7,6 @@ categories:
 ---
 
 
-#RxSwift 系列之Observable
-
 
 
 流，信号，阀门，水管，水珠，漏斗，等等。这些名词都被大家用到RxSwift上，应该都了解，这里就不详细说了。
