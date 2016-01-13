@@ -30,6 +30,8 @@ Observable<Int>初始化一个类型为Int的Observable实例，来看看empty()
         return Empty<E>()
     }
     
+<!--more-->
+    
 在本例中其实是实例化了一个Empty<Int>,我们去看看Empty的实现
 
 	class Empty<Element> : Producer<Element> {

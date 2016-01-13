@@ -24,6 +24,8 @@ categories:
   
   根据作者的目录很容易可以看出来，作者提供了两套异步socket接口，一套基于`GCD`，一套基于`RunLoop`。
   
+  <!--more-->
+  
 ##基于RunLoop的socket通信
 ###先简单说一下AsyncSockt的工作流程：
 

@@ -24,6 +24,9 @@ categories:
 	}
 	
 `ObservableType`是一个泛型协议
+
+<!--more-->
+
 实现这个协议的类，必须是可被观察的，所以`ObservableType`定义了一个订阅方法
 
 	func subscribe<O: ObserverType where O.E == E>(observer: O) -> Disposable
