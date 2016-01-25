@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "RxSwift之一个UITextField是如何和一个UILabel绑定的"
+title: "RxSwift源码解读之UITextField是如何和一个UILabel绑定的"
 date: 2016-01-22 16:23:30 +0800
 comments: true
 categories: 
