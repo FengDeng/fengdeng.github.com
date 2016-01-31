@@ -23,6 +23,9 @@ categories:
 4. star，unStar,checkStar等等对仓库的一些行为，请看[#YYRepository]()
 5. search Repos  和  search Users
 
+<!--more-->
+
+
 #Start
 1. 设置 `RxGitHubUserName` `RxGitHubPassword`
 2. 获取 login user 
