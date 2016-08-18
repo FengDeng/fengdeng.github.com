@@ -516,6 +516,11 @@ a {
   height: 100%;
   opacity: 1;
 }
+#header .profilepic img.show {
+  width: 100%;
+  height: 100%;
+  opacity: 1;
+}
 #header .header-subtitle {
   text-align: center;
   color: #999;
