@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Swift，RxSwift实现的RxGithub API库用法和代码说明 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="这是一个基于RxSwift的GitHub API库。希望给那些想写GitHub APP的同学一些方便。
+#RxGitHubAPI的整体设计
+所有的返回都设计成对象。例如用户，YYUser仓库，YYRepositorytag,YYTag等等……
+请大家移步去clone项目看吧 https://github.com/FengDeng/RxGitHubAPI">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Swift，RxSwift实现的RxGithub API库用法和代码说明">
+<meta property="og:url" content="http://yoursite.com/2016/01/31/2016-01-31-rxgithub-apiku-yong-fa-he-dai-ma-shuo-ming/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="这是一个基于RxSwift的GitHub API库。希望给那些想写GitHub APP的同学一些方便。
+#RxGitHubAPI的整体设计
+所有的返回都设计成对象。例如用户，YYUser仓库，YYRepositorytag,YYTag等等……
+请大家移步去clone项目看吧 https://github.com/FengDeng/RxGitHubAPI">
+<meta property="og:updated_time" content="2016-01-31T14:04:30.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Swift，RxSwift实现的RxGithub API库用法和代码说明">
+<meta name="twitter:description" content="这是一个基于RxSwift的GitHub API库。希望给那些想写GitHub APP的同学一些方便。
+#RxGitHubAPI的整体设计
+所有的返回都设计成对象。例如用户，YYUser仓库，YYRepositorytag,YYTag等等……
+请大家移步去clone项目看吧 https://github.com/FengDeng/RxGitHubAPI">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-2016-01-31-rxgithub-apiku-yong-fa-he-dai-ma-shuo-ming" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/01/31/2016-01-31-rxgithub-apiku-yong-fa-he-dai-ma-shuo-ming/" class="article-date">
+  <time datetime="2016-01-31T13:13:37.000Z" itemprop="datePublished">2016-01-31</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Swift，RxSwift实现的RxGithub API库用法和代码说明
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>这是一个基于RxSwift的GitHub API库。希望给那些想写GitHub APP的同学一些方便。</p>
+<p>#RxGitHubAPI的整体设计</p>
+<p>所有的返回都设计成对象。<br>例如用户，YYUser<br>仓库，YYRepository<br>tag,YYTag<br>等等……</p>
+<p>请大家移步去clone项目看吧 <a href="https://github.com/FengDeng/RxGitHubAPI" target="_blank" rel="external">https://github.com/FengDeng/RxGitHubAPI</a></p>
+<a id="more"></a>
+<p>所有的请求返回只有三种类型</p>
+<ol>
+<li><p>Requestable<element:nsobject></element:nsobject></p>
+</li>
+<li><p>Pageable<element:_arraytype where="" element.generator.element="" :="" nsobject=""></element:_arraytype></p>
+</li>
+<li><p>Actionable<element:booleanliteralconvertible></element:booleanliteralconvertible></p>
+</li>
+</ol>
+<p>这三个全部都是符合Observable协议的类，也就是说它们是可以被订阅的。</p>
+<p>下面来解释下这三个类型的主要设计用途</p>
+<ol>
+<li>怎么样获取一个用户？</li>
+<li>获取到了这个用户实例，怎么样获取他的所有仓库？</li>
+<li>获取到了所有仓库，怎么样给其中的一个仓库star？</li>
+</ol>
+<p>###<code>Requestable&lt;Element:NSObject&gt;</code><br>这是一个符合Observable协议的类，它是一个泛型类，且泛类型必须符合NSObject协议。之所有这样是因为本库JSON解析成模型用的是MJExtension。整个工程就这一个库是OC写的。也许有时间会换成Swift的解析库、</p>
+<p>这个类主要是实现 请求 返回结果(错误或者正确)。<br>当你订阅这个类实例的时候，它就会去网络请求，并且返回结果你订阅者</p>
+<p>具体例子，根据一个用户名获取这个用户的详细信息</p>
+<pre><code>RxGitHubAPI.yy_user(&quot;tangqiaoboy&quot;).subscribe { (user) -&gt; Void in
+        switch user{
+        case .Next(let user):
+            print(user.login)
+        case.Completed:
+            print(&quot;completed&quot;)
+        case .Error:
+            print(&quot;error&quot;)
+        }
+    }
+//下面是控制台输出
+tangqiaoboy
+completed
+</code></pre><p>完美！看看这个RxGitHubAPI.yy_user</p>
+<pre><code>static func yy_user(username:String)-&gt;Requestable&lt;YYUser&gt;{
+    return Requestable(mothod: .GET, url: kUserURL(username))
+}
+</code></pre><p>短短几行代码。返回的是Requestable对象，泛型在这里是是YYUser。</p>
+<p>YYUser就是RxGitHubAPI里表示一个用户信息的对象模型</p>
+<p>###Pageable<element: _arraytype="" where="" element.generator.element="" :="" nsobject=""></element:></p>
+<p>这是一个符合Observable协议的类，它是一个泛型类，且泛类型必须符合_ArrayType协议，且成员必须符合NSObject协议。因为这是提供给那些返回数组的API使用的，所有它的泛型必须符合数组，这样才能给订阅者提供想要的类型。</p>
+<p>这个类主要实现 请求  返回结果(错误或者正确)  翻页<br>当你订阅这个类的时候，他就会去网络请求，并且返回结果给订阅者。当你想翻页的时候，你可以对Pageable进行nextPage操作</p>
+<p>具体例子，就拿上面那个例子来说。在上面我们不是获取到了一个tangqiaoboy用户的对象模型YYUser嘛。假设我们现在持有这个YYUser的实例，就叫tangQiaoUser.我们来看看怎么获取这个tangqiaoUser的所有public仓库。</p>
+<pre><code>RxGitHubAPI.yy_user(&quot;tangqiaoboy&quot;).subscribe { (user) -&gt; Void in
+        switch user{
+        case .Next(let user):
+            print(user.login)
+            //获取到了tangqiao用户
+            //获取这个用户的所有公开仓库
+            user.yy_repos.subscribeNext({ (repos) -&gt; Void in
+                for repo in repos{
+                    print(repo.full_name)
+                }
+            })
+        case.Completed:
+            print(&quot;completed&quot;)
+        case .Error:
+            print(&quot;error&quot;)
+        }
+    }
+
+ //控制台输出如下
+tangqiaoboy/AVFoundationDemo
+tangqiaoboy/ClassNote-iOS
+tangqiaoboy/DocSets-for-iOS
+tangqiaoboy/DoubanAlbum
+tangqiaoboy/ELCImageGrabber
+tangqiaoboy/ELCImagePickerController
+tangqiaoboy/FlurryUsageSample
+tangqiaoboy/FmdbSample
+tangqiaoboy/HashTest
+tangqiaoboy/Hello-World
+tangqiaoboy/iOS-Pro
+tangqiaoboy/iOS-QR-Code-Generator
+tangqiaoboy/iOS5ViewCtrlerSample
+tangqiaoboy/iOSBlogCN
+tangqiaoboy/iOSSF
+tangqiaoboy/iphone-app
+tangqiaoboy/iRuby
+tangqiaoboy/juzhai
+tangqiaoboy/KVO_Sample
+tangqiaoboy/LTBlacklist
+tangqiaoboy/MultiLayerNavigation
+tangqiaoboy/newsyc
+tangqiaoboy/octopress
+tangqiaoboy/quotation.github.io
+tangqiaoboy/Ready2Rock
+tangqiaoboy/spf13-vim
+tangqiaoboy/SynchronizedUIActionSheetDemo
+tangqiaoboy/tangqiaoboy.github.com
+tangqiaoboy/the-swift-programming-language-in-chinese
+tangqiaoboy/TopWindowSample
+</code></pre><p>是不是超简单？？</p>
+<p>这里默认的是第一页，每页三十条，当然了，你可以通过下面的方法给改变页数，或者每页的条数。</p>
+<pre><code>//获取到了tangqiao用户
+            //获取这个用户的所有公开仓库
+            user.yy_repos.page(2, per_page: 1).subscribeNext({ (repos) -&gt; Void in
+                for repo in repos{
+                    print(repo.full_name)
+                }
+            })
+</code></pre><p>简单到令人发指！！！！</p>
+<p>###Actionable<element:booleanliteralconvertible></element:booleanliteralconvertible></p>
+<p>这个类其实就是为了处理那些返回Bool的请求。</p>
+<p>直接上例子吧。还是接着上面的。现在我有了tangqiaoboy的仓库模型YYRepository的实例，我想star。怎么star？？</p>
+<p>下面对刚刚获取的仓库列表的第一个进行star！简单：</p>
+<pre><code>RxGitHubAPI.yy_user(&quot;tangqiaoboy&quot;).subscribe { (user) -&gt; Void in
+        switch user{
+        case .Next(let user):
+            print(user.login)
+            //获取到了tangqiao用户
+            //获取这个用户的所有公开仓库
+            user.yy_repos.page(2, per_page: 1).subscribeNext({ (repos) -&gt; Void in
+                repos[0].action_star.subscribeNext({ (isSuccess) -&gt; Void in
+                    if isSuccess{
+                        print(&quot;您关注成功啦！&quot;)
+                    }
+                })
+            })
+        case.Completed:
+            print(&quot;completed&quot;)
+        case .Error:
+            print(&quot;error&quot;)
+        }
+    }
+</code></pre><p>是不是很简单方便？？还有很多工作为完成，后面的开发估计要等到年后了。大家没事就手贱star吧！给我点动力哈！！</p>
+<p>欢迎大家去GitHub查看<a href="https://github.com/FengDeng/RxGitHubAPI" target="_blank" rel="external">源代码</a></p>
+<p>也欢迎大家去<a href="http://weibo.com/FengDeng1219" target="_blank" rel="external">新浪微博</a>去给我发私信</p>
+<p>感谢大家！</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/01/31/2016-01-31-rxgithub-apiku-yong-fa-he-dai-ma-shuo-ming/" data-id="cirzrhq4v00054r2hs7m79yum" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/03/08/2016-03-08-swiftnet-xiang-mu-zhong-ke-zhi-jie-shi-yong-de-wang-luo-qing-qiu-ku/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          SwiftNet 项目中可直接使用的网络请求库
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/01/29/2016-01-29-a-github-api-by-rxswift/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">A GitHub API by RxSwift</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2016/05/24/2016-05-24-xiang-mu-jia-gou-xiao-jie-ios/">小短文，也谈iOS项目架构</a>
+          </li>
+        
+          <li>
+            <a href="/2016/03/08/2016-03-08-swiftnet-xiang-mu-zhong-ke-zhi-jie-shi-yong-de-wang-luo-qing-qiu-ku/">SwiftNet 项目中可直接使用的网络请求库</a>
+          </li>
+        
+          <li>
+            <a href="/2016/01/31/2016-01-31-rxgithub-apiku-yong-fa-he-dai-ma-shuo-ming/">Swift，RxSwift实现的RxGithub API库用法和代码说明</a>
+          </li>
+        
+          <li>
+            <a href="/2016/01/29/2016-01-29-a-github-api-by-rxswift/">A GitHub API by RxSwift</a>
+          </li>
+        
+          <li>
+            <a href="/2016/01/22/2016-01-22-rxswift-dao-di-[?]-ge-uitextfieldshi-ru-he-he-[?]-ge-uilabelbang-ding-de/">RxSwift源码解读之UITextField是如何和一个UILabel绑定的</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2016 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>

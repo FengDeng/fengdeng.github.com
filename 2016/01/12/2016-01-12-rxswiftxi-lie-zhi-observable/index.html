@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>RxSwift系列之Observable | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="流，信号，阀门，水管，水珠，漏斗，等等。这些名词都被大家用到RxSwift上，应该都了解，这里就不详细说了。下面简单的梳理下RxSwift中的半壁江山，Observable
+Observable 是一个泛型类
+public class Observable&amp;lt;Element&amp;gt; : ObservableType
+其实现了ObservableType协议
+public protocol Ob">
+<meta property="og:type" content="article">
+<meta property="og:title" content="RxSwift系列之Observable">
+<meta property="og:url" content="http://yoursite.com/2016/01/12/2016-01-12-rxswiftxi-lie-zhi-observable/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="流，信号，阀门，水管，水珠，漏斗，等等。这些名词都被大家用到RxSwift上，应该都了解，这里就不详细说了。下面简单的梳理下RxSwift中的半壁江山，Observable
+Observable 是一个泛型类
+public class Observable&amp;lt;Element&amp;gt; : ObservableType
+其实现了ObservableType协议
+public protocol Ob">
+<meta property="og:updated_time" content="2016-01-13T09:08:33.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="RxSwift系列之Observable">
+<meta name="twitter:description" content="流，信号，阀门，水管，水珠，漏斗，等等。这些名词都被大家用到RxSwift上，应该都了解，这里就不详细说了。下面简单的梳理下RxSwift中的半壁江山，Observable
+Observable 是一个泛型类
+public class Observable&amp;lt;Element&amp;gt; : ObservableType
+其实现了ObservableType协议
+public protocol Ob">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-2016-01-12-rxswiftxi-lie-zhi-observable" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/01/12/2016-01-12-rxswiftxi-lie-zhi-observable/" class="article-date">
+  <time datetime="2016-01-12T11:10:09.000Z" itemprop="datePublished">2016-01-12</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      RxSwift系列之Observable
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>流，信号，阀门，水管，水珠，漏斗，等等。这些名词都被大家用到RxSwift上，应该都了解，这里就不详细说了。<br>下面简单的梳理下RxSwift中的半壁江山，<code>Observable</code></p>
+<p><code>Observable</code> 是一个泛型类</p>
+<pre><code>public class Observable&lt;Element&gt; : ObservableType
+</code></pre><p>其实现了<code>ObservableType</code>协议</p>
+<pre><code>public protocol ObservableType : ObservableConvertibleType{
+    typealias E    
+    ....
+}
+</code></pre><p><code>ObservableType</code>是一个泛型协议</p>
+<a id="more"></a>
+<p>实现这个协议的类，必须是可被观察的，所以<code>ObservableType</code>定义了一个订阅方法</p>
+<pre><code>func subscribe&lt;O: ObserverType where O.E == E&gt;(observer: O) -&gt; Disposable
+</code></pre><p><code>ObservableType</code>继承了<code>ObservableConvertibleType</code>协议，也是一个泛型协议。<br>从字面意思很容易看出来，只要实现了这个协议的类必须实现一个能使自己成为<code>Observable</code>的方法，所以<code>ObservableConvertibleType</code>定义了一个asObservable的方法</p>
+<pre><code>func asObservable() -&gt; Observable&lt;E&gt;    
+</code></pre><p>来看<code>Observable</code>的实现，他实现了上面所说的两个协议的方法</p>
+<pre><code>public func subscribe&lt;O: ObserverType where O.E == E&gt;(observer: O) -&gt; Disposable {
+    abstractMethod()
+}
+
+public func asObservable() -&gt; Observable&lt;E&gt; {
+    return self
+}
+</code></pre><p>第一个方法是一个虚方法，提供给子类进行重写。如果子类不重写，直接抛出异常。我们来看看<code>abstractMethod()</code></p>
+<pre><code>@noreturn func abstractMethod() -&gt; Void {
+    rxFatalError(&quot;Abstract method&quot;)
+}
+
+@noreturn func rxFatalError(lastMessage: String) {
+// The temptation to comment this line is great, but please don&apos;t, it&apos;s for your own         good. The choice is yours.
+    fatalError(lastMessage)
+}
+</code></pre><p>第二个方法直接返回自己。</p>
+<p>接下来我们看看<code>Producer</code>这个类，它继承自<code>Observable</code></p>
+<pre><code>class Producer&lt;Element&gt; : Observable&lt;Element&gt;
+</code></pre><p>并且具体的实现了订阅这个方法</p>
+<pre><code>override func subscribe&lt;O : ObserverType where O.E == Element&gt;(observer: O) -&gt;Disposable {
+    if !CurrentThreadScheduler.isScheduleRequired {
+        return run(observer)
+    }
+    else {
+        return CurrentThreadScheduler.instance.schedule(()) { _ in
+            return self.run(observer)
+        }
+    }
+}
+
+func run&lt;O : ObserverType where O.E == Element&gt;(observer: O) -&gt; Disposable {
+    abstractMethod()
+}
+</code></pre><p>在订阅里调用了<code>run</code>方法。很明显，这个方法也是一个虚方法，子类必须重写.</p>
+<p>接下来，我们可以预见，所有的过滤器其实就是继承<code>Producer</code>，并且重写<code>run</code>方法。这里的过滤器指<code>Empty``Map``Never</code>等待。</p>
+<p>下一节再具体说说他们各自是怎么样实现<code>run</code>的</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/01/12/2016-01-12-rxswiftxi-lie-zhi-observable/" data-id="cirzrhq4i00004r2hjqrnc0kl" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/01/13/2016-01-13-rxswift-observablezhi-just/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          RxSwift Observable之Empty,Map的实现
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2015/11/20/2015-11-20-cocoaasyncsocketyuan-ma-jie-du/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">CocoaAsyncSocket源码解读</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2016/05/24/2016-05-24-xiang-mu-jia-gou-xiao-jie-ios/">小短文，也谈iOS项目架构</a>
+          </li>
+        
+          <li>
+            <a href="/2016/03/08/2016-03-08-swiftnet-xiang-mu-zhong-ke-zhi-jie-shi-yong-de-wang-luo-qing-qiu-ku/">SwiftNet 项目中可直接使用的网络请求库</a>
+          </li>
+        
+          <li>
+            <a href="/2016/01/31/2016-01-31-rxgithub-apiku-yong-fa-he-dai-ma-shuo-ming/">Swift，RxSwift实现的RxGithub API库用法和代码说明</a>
+          </li>
+        
+          <li>
+            <a href="/2016/01/29/2016-01-29-a-github-api-by-rxswift/">A GitHub API by RxSwift</a>
+          </li>
+        
+          <li>
+            <a href="/2016/01/22/2016-01-22-rxswift-dao-di-[?]-ge-uitextfieldshi-ru-he-he-[?]-ge-uilabelbang-ding-de/">RxSwift源码解读之UITextField是如何和一个UILabel绑定的</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2016 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>

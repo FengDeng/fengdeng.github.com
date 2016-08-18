@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>RxSwift源码解读之UITextField是如何和一个UILabel绑定的 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="只要一行代码
+writeTextField.rx_text.bindTo(displayLabel.rx_text)
+看下效果
+
+那么这到底是如何实现的呢">
+<meta property="og:type" content="article">
+<meta property="og:title" content="RxSwift源码解读之UITextField是如何和一个UILabel绑定的">
+<meta property="og:url" content="http://yoursite.com/2016/01/22/2016-01-22-rxswift-dao-di-[">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="只要一行代码
+writeTextField.rx_text.bindTo(displayLabel.rx_text)
+看下效果
+
+那么这到底是如何实现的呢">
+<meta property="og:image" content="https://raw.githubusercontent.com/FengDeng/Blog_Image/master/RxSwift.gif">
+<meta property="og:updated_time" content="2016-01-25T03:28:18.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="RxSwift源码解读之UITextField是如何和一个UILabel绑定的">
+<meta name="twitter:description" content="只要一行代码
+writeTextField.rx_text.bindTo(displayLabel.rx_text)
+看下效果
+
+那么这到底是如何实现的呢">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/FengDeng/Blog_Image/master/RxSwift.gif">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-2016-01-22-rxswift-dao-di-[?]-ge-uitextfieldshi-ru-he-he-[?]-ge-uilabelbang-ding-de" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/01/22/2016-01-22-rxswift-dao-di-[?]-ge-uitextfieldshi-ru-he-he-[?]-ge-uilabelbang-ding-de/" class="article-date">
+  <time datetime="2016-01-22T08:23:30.000Z" itemprop="datePublished">2016-01-22</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      RxSwift源码解读之UITextField是如何和一个UILabel绑定的
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>只要一行代码</p>
+<pre><code>writeTextField.rx_text.bindTo(displayLabel.rx_text)
+</code></pre><p>看下效果</p>
+<p><img src="https://raw.githubusercontent.com/FengDeng/Blog_Image/master/RxSwift.gif" alt="image"></p>
+<p>那么这到底是如何实现的呢</p>
+<a id="more"></a>
+<p>##整体分析<br>    代码层：<br>    writeTextField的rx_text通过bingTo这个函数和displayLabel的rx_text绑定了。</p>
+<pre><code>Rx思想：
+一个被观察者(Observable)通过bingTo函数和一个观察者(Observer)绑定了，这样无论被观察这如何变化，观察者都了如指掌
+</code></pre><p>##深层解析</p>
+<p>###writeTextField.rx_text</p>
+<p>这是一个Observable。也是一个Observer。<br>rx_text是RxSwift给UITextField的一个拓展属性，上代码</p>
+<pre><code>public var rx_text: ControlProperty&lt;String&gt; {
+    return rx_value(getter: { [weak self] in
+        self?.text ?? &quot;&quot;
+    }, setter: { [weak self] value in
+        self?.text = value
+    })
+}
+</code></pre><p>rx_text是一个<code>ControlProperty&lt;String&gt;</code>。由后面的函数生成。我们去看下那个函数</p>
+<pre><code>func rx_value&lt;T: Equatable&gt;(getter getter: () -&gt; T, setter: T -&gt; Void) -&gt; ControlProperty&lt;T&gt; {
+    let source: Observable&lt;T&gt; = Observable.create { [weak self] observer in
+        guard let control = self else {
+            observer.on(.Completed)
+            return NopDisposable.instance
+        }
+
+        observer.on(.Next(getter()))
+
+        let controlTarget = ControlTarget(control: control, controlEvents: [.AllEditingEvents, .ValueChanged]) { control in
+            observer.on(.Next(getter()))
+        }
+
+        return AnonymousDisposable {
+            controlTarget.dispose()
+        }
+    }
+        .distinctUntilChanged()
+        .takeUntil(rx_deallocated)
+
+    return ControlProperty&lt;T&gt;(values: source, valueSink: AnyObserver { event in
+        MainScheduler.ensureExecutingOnScheduler()
+
+        switch event {
+        case .Next(let value):
+            setter(value)
+        case .Error(let error):
+            bindingErrorToInterface(error)
+            break
+        case .Completed:
+            break
+        }
+    })
+}
+</code></pre><p>这个函数是UIControl的，所有UIControl的所有子类都有哈。UITextField是UIControl的子类</p>
+<p>函数有点长，我们一步一步分析，其实就两句</p>
+<p>先说下第一句，source的生成过程。source是一个Observable<t>，即这里的Observable<string></string></t></p>
+<ol>
+<li>首先获取self，获取不到直接completed</li>
+<li>获取到了，直接Next一个刚刚传进来的getter。这里是<code>self?.text ?? &quot;&quot;</code>，即流走一个Observable<string></string></li>
+<li>生成一个<code>ControlTarget</code>，这个<code>ControlTarget</code>每当<code>ValueChanged</code>都会流走一个Observable<string>（这个<code>ControlTarget</code>有点多，下回讲）</string></li>
+<li>上面三步走完后 ，这里的是一个Observable<string>。对这个Observable<string>进行<code>distinctUntilChanged()</code>,这个函数说明，只有String改变才会继续往下流</string></string></li>
+<li><code>takeUntil(rx_deallocated)</code>,直到这个UITextField被释放</li>
+<li>source结束，source的这个流程就是上面的5步</li>
+</ol>
+<p>其实如果一个UITextField的rx_text作为一个Observable，上面的代码已经足够了。</p>
+<p>为了实现UITextField也可以作为observer，于是有了下面的代码。</p>
+<p>再说第二句，通过source，生成一个<code>ControlProperty&lt;String&gt;</code>。这个被观察者才是本函数要返回的类型。它既是一个Observer，也是一个Observable</p>
+<ol>
+<li>直接调用<code>ControlProperty&lt;PropertyType&gt;</code>的初始化方法生成</li>
+<li><p>看一下初始化方法带进去的一个闭包</p>
+<pre><code>AnyObserver { event in
+    MainScheduler.ensureExecutingOnScheduler()
+
+    switch event {
+    case .Next(let value):
+        setter(value)
+    case .Error(let error):
+        bindingErrorToInterface(error)
+        break
+    case .Completed:
+        break
+    }
+</code></pre></li>
+</ol>
+<p>因为UI操作都必须在主线程。<code>MainScheduler.ensureExecutingOnScheduler()</code>这一句话是判断当前线程是不是在主线程<br>下面的代码是当UITextField作为一个observer时，接收到一个流的响应。</p>
+<p>###displayLabel.rx_text</p>
+<p>这是一个Observer<br>rx_text是RxSwift给UILabel的一个拓展属性，上代码</p>
+<pre><code>public var rx_text: AnyObserver&lt;String&gt; {
+    return AnyObserver { [weak self] event in
+        MainScheduler.ensureExecutingOnScheduler()
+
+        switch event {
+        case .Next(let value):
+            self?.text = value
+        case .Error(let error):
+            bindingErrorToInterface(error)
+            break
+        case .Completed:
+            break
+        }
+    }
+}
+</code></pre><p>很简单，只有响应流的代码。有流过来，就<code>self?.text = value</code></p>
+<p>有同学可能有疑问了，UITextField可以被观察，也可以是观察者。UILabel只能是观察者，我要是想观察UILabel的text怎么办呢？？？</p>
+<p>哈哈，easy，please try KVO</p>
+<pre><code>displayLabel.rx_observe(String.self, &quot;text&quot;).subscribe { (event) -&gt; Void in
+        switch event{
+        case .Next(let m):
+            print(m)
+        case .Completed:
+            print(&quot;&quot;)
+        case .Error(let t):
+            print(t)
+        }
+    }
+</code></pre><p>KVO还是比较简单的，大家可以自己看看。或许下一次我写写</p>
+<p>###bindTo<br><code>bingTo</code>是Observable的拓展</p>
+<pre><code>public func bindTo&lt;O: ObserverType where O.E == E&gt;(observer: O) -&gt; Disposable {
+    return self.subscribe(observer)
+}
+</code></pre><p>内部调用的Observable的subscribe方法来和一个observer进行关联</p>
+<p>这里就是调用了ControlProperty<string>的subscribe方法.</string></p>
+<pre><code>public func subscribe&lt;O : ObserverType where O.E == E&gt;(observer: O) -&gt; Disposable {
+    return _values.subscribe(observer)
+}
+</code></pre><p>_values.subscribe(observer)调用了SubscribeOn这个类的subscribe方法，</p>
+<p>SubscribeOn没实现subscribe方法，于是去他的父类Producer里去调用了</p>
+<pre><code>override func subscribe&lt;O : ObserverType where O.E == Element&gt;(observer: O) -&gt; Disposable {
+    if !CurrentThreadScheduler.isScheduleRequired {
+        return run(observer)
+    }
+    else {
+        return CurrentThreadScheduler.instance.schedule(()) { _ in
+            return self.run(observer)
+        }
+    }
+}
+</code></pre><p>Producer又去它的子类SubscribeOn去调用了run方法</p>
+<pre><code>override func run&lt;O : ObserverType where O.E == Ob.E&gt;(observer: O) -&gt; Disposable {
+    let sink = SubscribeOnSink(parent: self, observer: observer)
+    sink.disposable = sink.run()
+    return sink
+}
+</code></pre><p>当UITextField的每一个值产生时，调用了下面这个方法，在<code>SubscribeOnSink</code>这个类中</p>
+<pre><code>func on(event: Event&lt;Element&gt;) {
+    forwardOn(event)
+
+    if event.isStopEvent {
+        self.dispose()
+    }
+}
+</code></pre><p><code>forwardOn(event)</code>这个方法又去<code>SubscribeOnSink</code>这个类的父类中去调用了</p>
+<pre><code>final func forwardOn(event: Event&lt;O.E&gt;) {
+    if disposed {
+        return
+    }
+    _observer.on(event)
+}
+</code></pre><p>最终调到了<code>_observer.on(event)</code>这一句话。也是就UILabel的rx_text的<code>on</code>方法，<code>on(event)</code>是一个闭包，在UILabel的rx_text中等同以下代码</p>
+<pre><code>{ [weak self] event in
+    MainScheduler.ensureExecutingOnScheduler()
+
+    switch event {
+    case .Next(let value):
+        self?.text = value
+    case .Error(let error):
+        bindingErrorToInterface(error)
+        break
+    case .Completed:
+        break
+    }
+</code></pre><p>以上是一个复杂的继承🌲的方法调用。多看多揣摩吧！</p>
+<p>###至此，一个完整的Observable和一个Observer的绑定结束</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/01/22/2016-01-22-rxswift-dao-di-[?]-ge-uitextfieldshi-ru-he-he-[?]-ge-uilabelbang-ding-de/" data-id="cirzrhq4s00034r2hp50im721" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/01/29/2016-01-29-a-github-api-by-rxswift/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          A GitHub API by RxSwift
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/01/13/2016-01-13-rxswift-observablezhi-just/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">RxSwift Observable之Empty,Map的实现</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2016/05/24/2016-05-24-xiang-mu-jia-gou-xiao-jie-ios/">小短文，也谈iOS项目架构</a>
+          </li>
+        
+          <li>
+            <a href="/2016/03/08/2016-03-08-swiftnet-xiang-mu-zhong-ke-zhi-jie-shi-yong-de-wang-luo-qing-qiu-ku/">SwiftNet 项目中可直接使用的网络请求库</a>
+          </li>
+        
+          <li>
+            <a href="/2016/01/31/2016-01-31-rxgithub-apiku-yong-fa-he-dai-ma-shuo-ming/">Swift，RxSwift实现的RxGithub API库用法和代码说明</a>
+          </li>
+        
+          <li>
+            <a href="/2016/01/29/2016-01-29-a-github-api-by-rxswift/">A GitHub API by RxSwift</a>
+          </li>
+        
+          <li>
+            <a href="/2016/01/22/2016-01-22-rxswift-dao-di-[?]-ge-uitextfieldshi-ru-he-he-[?]-ge-uilabelbang-ding-de/">RxSwift源码解读之UITextField是如何和一个UILabel绑定的</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2016 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>A GitHub API by RxSwift | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="###一个用RxSwift实现的GitHubAPI库
+仓库地址 https://github.com/FengDeng/RxGitHubAPI
+这个库还未完善，由于最近工作比较忙，刚刚实现小部分的功能。
+也希望大家pull request 来完善它
+目前实现的功能：
+
+登录
+获取一个用户信息（自己的或者别人的）
+获取这个用户的其他信息，请看 #YYUser
+star，unStar,checkSta">
+<meta property="og:type" content="article">
+<meta property="og:title" content="A GitHub API by RxSwift">
+<meta property="og:url" content="http://yoursite.com/2016/01/29/2016-01-29-a-github-api-by-rxswift/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="###一个用RxSwift实现的GitHubAPI库
+仓库地址 https://github.com/FengDeng/RxGitHubAPI
+这个库还未完善，由于最近工作比较忙，刚刚实现小部分的功能。
+也希望大家pull request 来完善它
+目前实现的功能：
+
+登录
+获取一个用户信息（自己的或者别人的）
+获取这个用户的其他信息，请看 #YYUser
+star，unStar,checkSta">
+<meta property="og:updated_time" content="2016-01-31T14:04:36.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="A GitHub API by RxSwift">
+<meta name="twitter:description" content="###一个用RxSwift实现的GitHubAPI库
+仓库地址 https://github.com/FengDeng/RxGitHubAPI
+这个库还未完善，由于最近工作比较忙，刚刚实现小部分的功能。
+也希望大家pull request 来完善它
+目前实现的功能：
+
+登录
+获取一个用户信息（自己的或者别人的）
+获取这个用户的其他信息，请看 #YYUser
+star，unStar,checkSta">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-2016-01-29-a-github-api-by-rxswift" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/01/29/2016-01-29-a-github-api-by-rxswift/" class="article-date">
+  <time datetime="2016-01-29T07:48:36.000Z" itemprop="datePublished">2016-01-29</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      A GitHub API by RxSwift
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>###一个用RxSwift实现的GitHubAPI库</p>
+<p>仓库地址 <a href="https://github.com/FengDeng/RxGitHubAPI" target="_blank" rel="external">https://github.com/FengDeng/RxGitHubAPI</a></p>
+<p>这个库还未完善，由于最近工作比较忙，刚刚实现小部分的功能。</p>
+<p>也希望大家pull request 来完善它</p>
+<p>目前实现的功能：</p>
+<ol>
+<li>登录</li>
+<li>获取一个用户信息（自己的或者别人的）</li>
+<li>获取这个用户的其他信息，请看 <a href="">#YYUser</a></li>
+<li>star，unStar,checkStar等等对仓库的一些行为，请看<a href="">#YYRepository</a></li>
+<li>search Repos  和  search Users</li>
+</ol>
+<a id="more"></a>
+<p>#Start</p>
+<ol>
+<li>设置 <code>RxGitHubUserName</code> <code>RxGitHubPassword</code></li>
+<li><p>获取 login user </p>
+<pre><code>static var yy_user : Requestable&lt;YYUser&gt;        
+</code></pre></li>
+<li>订阅<code>Requestable&lt;YYUser&gt;</code>就可以获取到你登录的用户了。</li>
+</ol>
+<p>#Search<br>搜索仓库</p>
+<pre><code>RxGitHubAPI.searchRepos(q:String）
+</code></pre><p>订阅其获取YYRepository实例数组</p>
+<p>搜索用户</p>
+<pre><code>RxGitHubAPI.searchUsers(q:String）
+</code></pre><p>订阅其获取YYUser实例数组</p>
+<p>#YYUser</p>
+<p>通过登录获取YYUser实例，先实现前面start方法</p>
+<pre><code>RxGitHubAPI.yy_user
+</code></pre><p>订阅其获取YYUser实例</p>
+<p>通过username获取YYUser实例</p>
+<pre><code>RxGitHubAPI.yy_user(username：）
+</code></pre><p>订阅其获取YYUser实例</p>
+<p>使用这个YYUser实例，获取更多信息</p>
+<pre><code> list followers         
+public var yy_followers:Pageable&lt;[YYUser]
+
+
+ list followings
+public var yy_followings : Pageable&lt;[YYUser]&gt;
+
+
+ list gists     
+   public var yy_gist : Pageable&lt;[YYGist]&gt;
+
+
+ list starred repo
+public var yy_starred : Pageable&lt;[YYRepository]&gt;
+
+
+ list subscriptions repo
+public var yy_subscriptions : Pageable&lt;[YYRepository]&gt;
+
+
+ list subscriptions orgs
+public var yy_organizations : Pageable&lt;[YYOrganization]&gt;
+
+
+ list user repo
+public var yy_repos : Pageable&lt;[YYRepository]&gt;
+
+
+//fix me
+//public var yy_events
+
+//public var yy_received_events
+
+
+//action needs Auth
+
+follow this user
+  public var action_follow : Actionable&lt;Bool&gt;
+
+
+ unFollow this user
+public var action_unFollow : Actionable&lt;Bool&gt;
+
+
+ check you are following this user
+public var action_checkFollow : Actionable&lt;Bool&gt;
+</code></pre><p>#YYRepository</p>
+<p>获取到YYRepository实例，你可以</p>
+<pre><code>        /**
+star this repo
+
+- returns: return value description
+*/
+public var action_star : Actionable&lt;Bool&gt;{
+    return Actionable(mothod: .PUT, url: self.action_star_url.yy_clear(),headers:AuthHeader())
+}
+
+/**
+ unStar this repo
+
+ - returns: return value description
+ */
+public var action_unStar : Actionable&lt;Bool&gt;{
+    return Actionable(mothod: .DELETE, url: self.action_star_url.yy_clear(),headers:AuthHeader())
+}
+
+/**
+ check you are starring this repo
+
+ - returns:
+ */
+public var action_checkStar : Actionable&lt;Bool&gt;{
+    return Actionable(mothod: .GET, url: self.action_star_url.yy_clear(),headers:AuthHeader())
+}
+
+/**
+ watch this repo
+
+ - returns: return value description
+ */
+public var action_watch : Actionable&lt;Bool&gt;{
+    return Actionable(mothod: .PUT, url: self.action_watch_url.yy_clear(),headers:AuthHeader())
+}
+
+/**
+ unWatch this repo
+
+ - returns: return value description
+ */
+public var action_unWatch : Actionable&lt;Bool&gt;{
+    return Actionable(mothod: .DELETE, url: self.action_watch_url.yy_clear(),headers:AuthHeader())
+}
+
+/**
+ check you are watching this repo
+
+ - returns:
+ */
+public var action_checkWatch : Actionable&lt;Bool&gt;{
+    return Actionable(mothod: .GET, url: self.action_watch_url.yy_clear(),headers:AuthHeader())
+}
+</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/01/29/2016-01-29-a-github-api-by-rxswift/" data-id="cirzrhq4t00044r2hj049j4od" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/01/31/2016-01-31-rxgithub-apiku-yong-fa-he-dai-ma-shuo-ming/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Swift，RxSwift实现的RxGithub API库用法和代码说明
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/01/22/2016-01-22-rxswift-dao-di-[?]-ge-uitextfieldshi-ru-he-he-[?]-ge-uilabelbang-ding-de/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">RxSwift源码解读之UITextField是如何和一个UILabel绑定的</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2016/05/24/2016-05-24-xiang-mu-jia-gou-xiao-jie-ios/">小短文，也谈iOS项目架构</a>
+          </li>
+        
+          <li>
+            <a href="/2016/03/08/2016-03-08-swiftnet-xiang-mu-zhong-ke-zhi-jie-shi-yong-de-wang-luo-qing-qiu-ku/">SwiftNet 项目中可直接使用的网络请求库</a>
+          </li>
+        
+          <li>
+            <a href="/2016/01/31/2016-01-31-rxgithub-apiku-yong-fa-he-dai-ma-shuo-ming/">Swift，RxSwift实现的RxGithub API库用法和代码说明</a>
+          </li>
+        
+          <li>
+            <a href="/2016/01/29/2016-01-29-a-github-api-by-rxswift/">A GitHub API by RxSwift</a>
+          </li>
+        
+          <li>
+            <a href="/2016/01/22/2016-01-22-rxswift-dao-di-[?]-ge-uitextfieldshi-ru-he-he-[?]-ge-uilabelbang-ding-de/">RxSwift源码解读之UITextField是如何和一个UILabel绑定的</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2016 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>

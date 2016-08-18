@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>小短文，也谈iOS项目架构 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="##层级结构,自底向上
+持久层(File,Realm,SQLite)&amp;lt;==&amp;gt;网络层(相信每个公司都有自己的网络层吧)==&amp;gt;业务层(ViewModel)==&amp;gt;展示层(View,VC)">
+<meta property="og:type" content="article">
+<meta property="og:title" content="小短文，也谈iOS项目架构">
+<meta property="og:url" content="http://yoursite.com/2016/05/24/2016-05-24-xiang-mu-jia-gou-xiao-jie-ios/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="##层级结构,自底向上
+持久层(File,Realm,SQLite)&amp;lt;==&amp;gt;网络层(相信每个公司都有自己的网络层吧)==&amp;gt;业务层(ViewModel)==&amp;gt;展示层(View,VC)">
+<meta property="og:updated_time" content="2016-05-24T09:38:33.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="小短文，也谈iOS项目架构">
+<meta name="twitter:description" content="##层级结构,自底向上
+持久层(File,Realm,SQLite)&amp;lt;==&amp;gt;网络层(相信每个公司都有自己的网络层吧)==&amp;gt;业务层(ViewModel)==&amp;gt;展示层(View,VC)">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-2016-05-24-xiang-mu-jia-gou-xiao-jie-ios" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/05/24/2016-05-24-xiang-mu-jia-gou-xiao-jie-ios/" class="article-date">
+  <time datetime="2016-05-24T01:24:27.000Z" itemprop="datePublished">2016-05-24</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      小短文，也谈iOS项目架构
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>##层级结构,自底向上</p>
+<p>持久层(File,Realm,SQLite)&lt;==&gt;网络层(相信每个公司都有自己的网络层吧)==&gt;业务层(ViewModel)==&gt;展示层(View,VC)</p>
+<a id="more"></a>
+<p>###持久层<br>耦合到网络层</p>
+<p>设计要点</p>
+<pre><code>持久模型的选择，我这里选择了文件，直接缓存了JSON.txt。并且维护一张表映射到文件，实现快速获取，文件超时删除等操作。
+
+持久层的timeout设置，网络层访问到这里的时候，如果超时立即抛弃缓存
+</code></pre><p>###网络层<br>耦合到持久层</p>
+<p>设计要点</p>
+<pre><code>网络层的设计是基于离散式的，即一个API接口对于一个Class。实现接口复用，有了为同一个公司的多个APP提供APIKit的可能。
+
+网络层的设计是基于数据流的。也就是说，你订阅了这个接口，以后这个接口出现刷新，加载数据等，所有的返回及时发送给所有订阅者。
+
+一份请求数据，可以多处订阅。例如在首页加载了N个接口，在详情页获取其中某个接口的返回数据，这里你不需要知道那个接口是否加载完成，直接订阅即可。
+
+接口实例是可reload，可refresh，可nexPage得，具体基于业务实现
+
+是有缓存开关的
+
+是可adaptation的。这里可要求过来接收数据的类型实现JSONConvertable协议
+
+是可以统一catch一些errors的。
+</code></pre><p>###业务层<br>业务层耦合网络层</p>
+<p>设计要点</p>
+<pre><code>这里的业务层就抽象成一个若干个ViewModel
+
+ViewModel维护各种数据流，状态。部分数据是要提供给展示层的
+
+展示层和业务层相互订阅。
+</code></pre><p>###展示层<br>展示层和业务层耦合</p>
+<p>设计要点</p>
+<pre><code>View单纯的包含View。哈哈这里递归了。View也提供事件流，以供和业务层进行绑定。例如这里的view里有一个button，点击button提交数据。这个数据肯定在ViewModel里了。所有，view提供一个buttonClick的信号，ViewModel提供的UploadData的操作。两者绑定即可。
+
+ViewController，主要在这里进行业务层ViewModel和视图View的绑定，解绑。
+</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/05/24/2016-05-24-xiang-mu-jia-gou-xiao-jie-ios/" data-id="cirzrhq4y00074r2hmpu1x77w" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2016/03/08/2016-03-08-swiftnet-xiang-mu-zhong-ke-zhi-jie-shi-yong-de-wang-luo-qing-qiu-ku/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">SwiftNet 项目中可直接使用的网络请求库</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2016/05/24/2016-05-24-xiang-mu-jia-gou-xiao-jie-ios/">小短文，也谈iOS项目架构</a>
+          </li>
+        
+          <li>
+            <a href="/2016/03/08/2016-03-08-swiftnet-xiang-mu-zhong-ke-zhi-jie-shi-yong-de-wang-luo-qing-qiu-ku/">SwiftNet 项目中可直接使用的网络请求库</a>
+          </li>
+        
+          <li>
+            <a href="/2016/01/31/2016-01-31-rxgithub-apiku-yong-fa-he-dai-ma-shuo-ming/">Swift，RxSwift实现的RxGithub API库用法和代码说明</a>
+          </li>
+        
+          <li>
+            <a href="/2016/01/29/2016-01-29-a-github-api-by-rxswift/">A GitHub API by RxSwift</a>
+          </li>
+        
+          <li>
+            <a href="/2016/01/22/2016-01-22-rxswift-dao-di-[?]-ge-uitextfieldshi-ru-he-he-[?]-ge-uilabelbang-ding-de/">RxSwift源码解读之UITextField是如何和一个UILabel绑定的</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2016 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>

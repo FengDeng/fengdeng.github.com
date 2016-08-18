@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>CocoaAsyncSocket源码解读 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="###先看看文件结构：        ├── CocoaAsyncSocket.h        ├── GCD        │   ├── GCDAsyncSocket.h        │   ├── GCDAsyncSocket.m        │   ├── GCDAsyncUdpSocket.h        │   └── GCDAsyncUdpSocket.m        └─">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CocoaAsyncSocket源码解读">
+<meta property="og:url" content="http://yoursite.com/2015/11/20/2015-11-20-cocoaasyncsocketyuan-ma-jie-du/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="###先看看文件结构：        ├── CocoaAsyncSocket.h        ├── GCD        │   ├── GCDAsyncSocket.h        │   ├── GCDAsyncSocket.m        │   ├── GCDAsyncUdpSocket.h        │   └── GCDAsyncUdpSocket.m        └─">
+<meta property="og:updated_time" content="2016-01-13T09:08:21.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="CocoaAsyncSocket源码解读">
+<meta name="twitter:description" content="###先看看文件结构：        ├── CocoaAsyncSocket.h        ├── GCD        │   ├── GCDAsyncSocket.h        │   ├── GCDAsyncSocket.m        │   ├── GCDAsyncUdpSocket.h        │   └── GCDAsyncUdpSocket.m        └─">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-2015-11-20-cocoaasyncsocketyuan-ma-jie-du" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/11/20/2015-11-20-cocoaasyncsocketyuan-ma-jie-du/" class="article-date">
+  <time datetime="2015-11-20T08:10:24.000Z" itemprop="datePublished">2015-11-20</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      CocoaAsyncSocket源码解读
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>###先看看文件结构：<br>        ├── CocoaAsyncSocket.h<br>        ├── GCD<br>        │   ├── GCDAsyncSocket.h<br>        │   ├── GCDAsyncSocket.m<br>        │   ├── GCDAsyncUdpSocket.h<br>        │   └── GCDAsyncUdpSocket.m<br>        └── RunLoop<br>            ├── AsyncSocket.h<br>            ├── AsyncSocket.m<br>            ├── AsyncUdpSocket.h<br>            └── AsyncUdpSocket.m<br>  一共9个文件</p>
+<p>  CocoaAsyncSocket.h没什么说的，只是import了所有的头文件。</p>
+<p>  根据作者的目录很容易可以看出来，作者提供了两套异步socket接口，一套基于<code>GCD</code>，一套基于<code>RunLoop</code>。</p>
+  <a id="more"></a>
+<p>##基于RunLoop的socket通信</p>
+<p>###先简单说一下AsyncSockt的工作流程：</p>
+<ol>
+<li><p>创建一个socket</p>
+<pre><code>- (id)init;
+- (id)initWithDelegate:(id)delegate;
+- (id)initWithDelegate:(id)delegate userData:(long)userData;
+</code></pre></li>
+<li><p>监听一个端口，如果是一个服务端，则向其读取信息。如果是一个客户端则向其发送信息</p>
+<pre><code>- (BOOL)connectToHost:(NSString *)hostname
+       onPort:(UInt16)port
+  withTimeout:(NSTimeInterval)timeout
+        error:(NSError **)errPtr;
+</code></pre></li>
+<li>根据delegate进行回调，这里就不细写了，头文件都有</li>
+</ol>
+<p>###首先来看AsyncSocket这两个文件<br>AsyncSocket这个类的属性</p>
+<pre><code>@interface AsyncSocket : NSObject
+{
+    CFSocketNativeHandle theNativeSocket4;
+    CFSocketNativeHandle theNativeSocket6;
+
+    CFSocketRef theSocket4;            // IPv4 accept or connect socket
+    CFSocketRef theSocket6;            // IPv6 accept or connect socket
+
+    CFReadStreamRef theReadStream;
+    CFWriteStreamRef theWriteStream;
+
+    CFRunLoopSourceRef theSource4;     // For theSocket4
+    CFRunLoopSourceRef theSource6;     // For theSocket6
+
+    //自己的runloop
+    CFRunLoopRef theRunLoop;
+
+    CFSocketContext theContext;
+
+    NSArray *theRunLoopModes;
+
+    //超时定时器
+    NSTimer *theConnectTimer;
+
+    //一个队列，存放服务端返回的信息
+    NSMutableArray *theReadQueue;
+
+    //如果信息被读走，且theReadQueue不为空，则从theReadQueue取出第一个包
+    AsyncReadPacket *theCurrentRead;
+
+    //一个读取buffer的定时器
+    NSTimer *theReadTimer;
+
+
+    NSMutableData *partialReadBuffer;
+
+    NSMutableArray *theWriteQueue;
+    AsyncWritePacket *theCurrentWrite;
+    NSTimer *theWriteTimer;
+
+    id theDelegate;
+    UInt16 theFlags;
+
+    long theUserData;
+}
+</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2015/11/20/2015-11-20-cocoaasyncsocketyuan-ma-jie-du/" data-id="cirzrhq4o00014r2h1cnivkql" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/01/12/2016-01-12-rxswiftxi-lie-zhi-observable/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          RxSwift系列之Observable
+        
+      </div>
+    </a>
+  
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2016/05/24/2016-05-24-xiang-mu-jia-gou-xiao-jie-ios/">小短文，也谈iOS项目架构</a>
+          </li>
+        
+          <li>
+            <a href="/2016/03/08/2016-03-08-swiftnet-xiang-mu-zhong-ke-zhi-jie-shi-yong-de-wang-luo-qing-qiu-ku/">SwiftNet 项目中可直接使用的网络请求库</a>
+          </li>
+        
+          <li>
+            <a href="/2016/01/31/2016-01-31-rxgithub-apiku-yong-fa-he-dai-ma-shuo-ming/">Swift，RxSwift实现的RxGithub API库用法和代码说明</a>
+          </li>
+        
+          <li>
+            <a href="/2016/01/29/2016-01-29-a-github-api-by-rxswift/">A GitHub API by RxSwift</a>
+          </li>
+        
+          <li>
+            <a href="/2016/01/22/2016-01-22-rxswift-dao-di-[?]-ge-uitextfieldshi-ru-he-he-[?]-ge-uilabelbang-ding-de/">RxSwift源码解读之UITextField是如何和一个UILabel绑定的</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2016 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>

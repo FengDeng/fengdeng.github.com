@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>RxSwift Observable之Empty,Map的实现 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="上一节说了Observable这个超类的设计，本节内容来浅析下它的众多子类中的两个的实现
+##Empty先看下一个sample
+example(&amp;quot;empty&amp;quot;) {
+let emptySequence = Observable&amp;lt;Int&amp;gt;.empty()
+
+let subscription = emptySequence
+    .subscribe { event">
+<meta property="og:type" content="article">
+<meta property="og:title" content="RxSwift Observable之Empty,Map的实现">
+<meta property="og:url" content="http://yoursite.com/2016/01/13/2016-01-13-rxswift-observablezhi-just/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="上一节说了Observable这个超类的设计，本节内容来浅析下它的众多子类中的两个的实现
+##Empty先看下一个sample
+example(&amp;quot;empty&amp;quot;) {
+let emptySequence = Observable&amp;lt;Int&amp;gt;.empty()
+
+let subscription = emptySequence
+    .subscribe { event">
+<meta property="og:updated_time" content="2016-01-13T09:08:46.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="RxSwift Observable之Empty,Map的实现">
+<meta name="twitter:description" content="上一节说了Observable这个超类的设计，本节内容来浅析下它的众多子类中的两个的实现
+##Empty先看下一个sample
+example(&amp;quot;empty&amp;quot;) {
+let emptySequence = Observable&amp;lt;Int&amp;gt;.empty()
+
+let subscription = emptySequence
+    .subscribe { event">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-2016-01-13-rxswift-observablezhi-just" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/01/13/2016-01-13-rxswift-observablezhi-just/" class="article-date">
+  <time datetime="2016-01-13T01:32:34.000Z" itemprop="datePublished">2016-01-13</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      RxSwift Observable之Empty,Map的实现
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>上一节说了<a href="http://fengdeng.github.io/blog/2016/01/12/rxswiftxi-lie-zhi-observable/" target="_blank" rel="external">Observable这个超类的设计</a>，本节内容来浅析下它的众多子类中的两个的实现</p>
+<p>##Empty<br>先看下一个sample</p>
+<pre><code>example(&quot;empty&quot;) {
+let emptySequence = Observable&lt;Int&gt;.empty()
+
+let subscription = emptySequence
+    .subscribe { event in
+        print(event)
+    }
+}
+
+//输出
+--- empty example ---
+Completed
+</code></pre><p>Observable<int>初始化一个类型为Int的Observable实例，来看看empty()方法</int></p>
+<pre><code>public static func empty() -&gt; Observable&lt;E&gt; {
+    return Empty&lt;E&gt;()
+}
+</code></pre><a id="more"></a>
+<p>在本例中其实是实例化了一个Empty<int>,我们去看看Empty的实现</int></p>
+<pre><code>class Empty&lt;Element&gt; : Producer&lt;Element&gt; {
+    override func subscribe&lt;O : ObserverType where O.E == Element&gt;(observer: O) -&gt; Disposable     {
+        observer.on(.Completed)
+        return NopDisposable.instance
+    }
+}
+</code></pre><p>看到了没，是Producer的子类，Producer是啥，是Observable的子类，说明这是一个可被观察的对象。它重写了订阅方法。</p>
+<p>暂且我们没有写到<code>Observer</code>，但是这里我先说明，这里的observer.on(.Completed)里的<code>on(.Completed)</code>等于我们sample里的<code>{ event in print(event)}</code>。</p>
+<p>这说明啥，说明我们订阅这个Empty的实例，其实内部就是对我们的闭包进行了一次回调，传出<code>.Completed</code>的Event。</p>
+<p>这样应该就明白为什么会输出<code>//输出
+    --- empty example ---
+    Completed</code></p>
+<p>可能有人会疑问，那么Empty里的observer.on(.Completed)里的observer怎么来的，sample里根本没有传observer啊。<br>我们看sample里的subscribe方法，在ObservableType协议里有声明</p>
+<pre><code>public func subscribe(on: (event: RxSwift.Event&lt;Self.E&gt;) -&gt; Void) -&gt; Disposable
+</code></pre><p>其实就是传入一个闭包，根本没有Observer.那么sample是怎么调用Empty里的订阅方法的呢？</p>
+<p>我们来看<code>ObservableType</code>的一个拓展，</p>
+<pre><code>public func subscribe(on: (event: Event&lt;E&gt;) -&gt; Void)
+    -&gt; Disposable {
+    let observer = AnonymousObserver { e in
+        on(event: e)
+    }
+    return self.subscribeSafe(observer)
+}
+</code></pre><p>原来这样子啊。Empty找不到sample里的subscribe方法，只能到父类里去找了，最终找到了在协议的默认实现里找到了，于是调用。</p>
+<p>这个方法创建了一个匿名观察者，然后self.subscribeSafe(observer)，</p>
+<pre><code>func subscribeSafe&lt;O: ObserverType where O.E == E&gt;(observer: O) -&gt; Disposable {
+    return self.asObservable().subscribe(observer)
+}
+</code></pre><p>这里的subscribe(observer)就是调用的Empty里的订阅方法。observer就来了。并且observer还把我们的闭包带来了。<br>于是打印<code>Completed</code></p>
+<p>哈哈</p>
+<p>以上整个就是订阅一个空信号的过程。</p>
+<p>##举一反三，兄弟们自己对照源码看看Never Just等等同类型的实现</p>
+<p>##Map</p>
+<p>Map，就是一个关卡，流过这个关卡的Observable都会被这个关卡所改变。</p>
+<p>看下Map的sample</p>
+<pre><code>example(&quot;map&quot;) {
+let originalSequence = Observable.of(Character(&quot;A&quot;), Character(&quot;B&quot;), Character(&quot;C&quot;))
+
+_ = originalSequence
+    .map { char in
+        char.hashValue
+    }
+    .subscribe { print($0) }
+}
+</code></pre><p>这个sample是对一个队列进行map，闭包里把char转换为hashValue。</p>
+<p>originalSequence是一个被观察者，看看这个map方法的定义和实现</p>
+<pre><code>public func map&lt;R&gt;(selector: E throws -&gt; R)
+    -&gt; Observable&lt;R&gt; {
+    return self.asObservable().composeMap(selector)
+}
+</code></pre><p>传入一个E-&gt;R的闭包，返回一个Observable<r>，看一下self.asObservable().composeMap(selector)</r></p>
+<pre><code>internal func composeMap&lt;R&gt;(selector: Element throws -&gt; R) -&gt; Observable&lt;R&gt; {
+    return Map(source: self, selector: selector)
+}
+</code></pre><p>原来返回的是一个Map的实例。。。而这个Map也是继承Producer，所以也是Observable<r></r></p>
+<pre><code>class Map&lt;SourceType, ResultType&gt;: Producer&lt;ResultType&gt; 
+</code></pre><p>当这个Map被订阅的时候，它的run方法被调用，</p>
+<pre><code>override func run&lt;O: ObserverType where O.E == ResultType&gt;(observer: O) -&gt; Disposable {
+    let sink = MapSink(selector: _selector, observer: observer)
+    sink.disposable = _source.subscribe(sink)
+    return sink
+}
+</code></pre><p>MapSink是个什么鬼。。。翻阅源码就会发现，所有涉及到信号的变化的observable，都会有一个sink。这个sink是为了多线程而设计的。里面大多数都是原子操作，自旋锁，容错机制。</p>
+<p>sample的原始信号是一个Sequeue,在sequence的实现里可以知道，对sequeue进行循环直到completed。这里对一次循环进行说明。</p>
+<p>一次循环，调用一次MapSink(selector: _selector, observer: observer)。</p>
+<p>MapSink里调用一次这个方法</p>
+<pre><code>func on(event: Event&lt;SourceType&gt;) {
+    switch event {
+    case .Next(let element):
+        do {
+            let mappedElement = try _selector(element, try incrementChecked(&amp;_index))
+            forwardOn(.Next(mappedElement))
+        }
+        catch let e {
+            forwardOn(.Error(e))
+            dispose()
+        }
+    case .Error(let error):
+        forwardOn(.Error(error))
+        dispose()
+    case .Completed:
+        forwardOn(.Completed)
+        dispose()
+    }
+}
+</code></pre><p>通过这一句话<code>let mappedElement = try _selector(element, try incrementChecked(&amp;_index))</code>这个整个流就从<code>.Next(E)-&gt;.Next(R)</code></p>
+<p>这个流程如下</p>
+<p><code>数组&lt;E&gt;------&gt;被观察者&lt;E&gt;-------&gt;被观察者&lt;Map&lt;E-&gt;R&gt;&gt;</code></p>
+<p>##举一反三，兄弟们自己对照源码看看同类型的实现</p>
+<p>##一些总结</p>
+<p>RxSwift中四个重要的角色</p>
+<p><code>Observable</code></p>
+<p><code>Observer</code>  </p>
+<p><code>Disposable</code></p>
+<p><code>Scheduler</code></p>
+<p>研究好了这个四个鬼，就研究好了Rx。</p>
+<p>下一节详解一个Model的text绑定一个UITextField的text的响应流程</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/01/13/2016-01-13-rxswift-observablezhi-just/" data-id="cirzrhq4r00024r2h85bgreob" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/01/22/2016-01-22-rxswift-dao-di-[?]-ge-uitextfieldshi-ru-he-he-[?]-ge-uilabelbang-ding-de/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          RxSwift源码解读之UITextField是如何和一个UILabel绑定的
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/01/12/2016-01-12-rxswiftxi-lie-zhi-observable/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">RxSwift系列之Observable</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2016/05/24/2016-05-24-xiang-mu-jia-gou-xiao-jie-ios/">小短文，也谈iOS项目架构</a>
+          </li>
+        
+          <li>
+            <a href="/2016/03/08/2016-03-08-swiftnet-xiang-mu-zhong-ke-zhi-jie-shi-yong-de-wang-luo-qing-qiu-ku/">SwiftNet 项目中可直接使用的网络请求库</a>
+          </li>
+        
+          <li>
+            <a href="/2016/01/31/2016-01-31-rxgithub-apiku-yong-fa-he-dai-ma-shuo-ming/">Swift，RxSwift实现的RxGithub API库用法和代码说明</a>
+          </li>
+        
+          <li>
+            <a href="/2016/01/29/2016-01-29-a-github-api-by-rxswift/">A GitHub API by RxSwift</a>
+          </li>
+        
+          <li>
+            <a href="/2016/01/22/2016-01-22-rxswift-dao-di-[?]-ge-uitextfieldshi-ru-he-he-[?]-ge-uilabelbang-ding-de/">RxSwift源码解读之UITextField是如何和一个UILabel绑定的</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2016 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>
