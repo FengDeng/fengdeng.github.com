@@ -92,7 +92,7 @@ writeTextField.rx_text.bindTo(displayLabel.rx_text)
 <meta property="og:type" content="article">
 <meta property="og:title" content="RxSwift源码解读之UITextField是如何和一个UILabel绑定的">
 <meta property="og:url" content="http://yoursite.com/2016/01/22/2016-01-22-rxswift-dao-di-[">
-<meta property="og:site_name" content="Hexo">
+<meta property="og:site_name" content="FengDeng的博客">
 <meta property="og:description" content="只要一行代码
 writeTextField.rx_text.bindTo(displayLabel.rx_text)
 看下效果
@@ -130,10 +130,10 @@ writeTextField.rx_text.bindTo(displayLabel.rx_text)
 
   <link rel="canonical" href="http://yoursite.com/2016/01/22/2016-01-22-rxswift-dao-di-["/>
 
-  <title> RxSwift源码解读之UITextField是如何和一个UILabel绑定的 | Hexo </title>
+  <title> RxSwift源码解读之UITextField是如何和一个UILabel绑定的 | FengDeng的博客 </title>
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="">
+<body itemscope itemtype="http://schema.org/WebPage" lang="chinese">
 
   
 
@@ -161,11 +161,11 @@ writeTextField.rx_text.bindTo(displayLabel.rx_text)
   <div class="custom-logo-site-title">
     <a href="/"  class="brand" rel="start">
       <span class="logo-line-before"><i></i></span>
-      <span class="site-title">Hexo</span>
+      <span class="site-title">FengDeng的博客</span>
       <span class="logo-line-after"><i></i></span>
     </a>
   </div>
-  <p class="site-subtitle"></p>
+  <p class="site-subtitle">垂死病中惊坐起，还有BUG要调试</p>
 </div>
 
 <div class="site-nav-toggle">
@@ -560,8 +560,8 @@ writeTextField.rx_text.bindTo(displayLabel.rx_text)
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.gif"
-               alt="John Doe" />
-          <p class="site-author-name" itemprop="name">John Doe</p>
+               alt="" />
+          <p class="site-author-name" itemprop="name"></p>
           <p class="site-description motion-element" itemprop="description"></p>
         </div>
         <nav class="site-state motion-element">
@@ -622,7 +622,7 @@ writeTextField.rx_text.bindTo(displayLabel.rx_text)
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
-  <span class="author" itemprop="copyrightHolder">John Doe</span>
+  <span class="author" itemprop="copyrightHolder"></span>
 </div>
 
 <div class="powered-by">
