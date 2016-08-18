@@ -1,131 +1,381 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
+<!doctype html>
+
+
+
   
-  <title>Hexo</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta property="og:type" content="website">
 <meta property="og:title" content="Hexo">
 <meta property="og:url" content="http://yoursite.com/index.html">
 <meta property="og:site_name" content="Hexo">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Hexo">
-  
-    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
-  
-  
-    <link rel="icon" href="/favicon.png">
-  
-  
-    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
-  
-  <link rel="stylesheet" href="/css/style.css">
-  
 
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Author'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/"/>
+
+  <title> Hexo </title>
 </head>
 
-<body>
-  <div id="container">
-    <div id="wrap">
-      <header id="header">
-  <div id="banner"></div>
-  <div id="header-outer" class="outer">
-    <div id="header-title" class="inner">
-      <h1 id="logo-wrap">
-        <a href="/" id="logo">Hexo</a>
-      </h1>
-      
-    </div>
-    <div id="header-inner" class="inner">
-      <nav id="main-nav">
-        <a id="main-nav-toggle" class="nav-icon"></a>
-        
-          <a class="main-nav-link" href="/">Home</a>
-        
-          <a class="main-nav-link" href="/archives">Archives</a>
-        
-      </nav>
-      <nav id="sub-nav">
-        
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
-        
-        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
-      </nav>
-      <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
-      </div>
-    </div>
-  </div>
-</header>
-      <div class="outer">
-        <section id="main">
-  
-    <article id="post-2016-05-24-xiang-mu-jia-gou-xiao-jie-ios" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/05/24/2016-05-24-xiang-mu-jia-gou-xiao-jie-ios/" class="article-date">
-  <time datetime="2016-05-24T01:24:27.000Z" itemprop="datePublished">2016-05-24</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/05/24/2016-05-24-xiang-mu-jia-gou-xiao-jie-ios/">小短文，也谈iOS项目架构</a>
-    </h1>
+<body itemscope itemtype="http://schema.org/WebPage" lang="">
+
   
 
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left 
+   page-home 
+ ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Hexo</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Startseite
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archiv
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+  <section id="posts" class="posts-expand">
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/05/24/2016-05-24-xiang-mu-jia-gou-xiao-jie-ios/" itemprop="url">
+                  小短文，也谈iOS项目架构
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Veröffentlicht am</span>
+            <time itemprop="dateCreated" datetime="2016-05-24T09:24:27+08:00" content="2016-05-24">
+              2016-05-24
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
       </header>
     
-    <div class="article-entry" itemprop="articleBody">
+
+
+    <div class="post-body" itemprop="articleBody">
+
       
-        <p>##层级结构,自底向上</p>
-<p>持久层(File,Realm,SQLite)&lt;==&gt;网络层(相信每个公司都有自己的网络层吧)==&gt;业务层(ViewModel)==&gt;展示层(View,VC)</p>
+      
+
+      
         
-          <p class="article-more-link">
-            <a href="/2016/05/24/2016-05-24-xiang-mu-jia-gou-xiao-jie-ios/#more">Read More</a>
-          </p>
+          <p>##层级结构,自底向上</p>
+<p>持久层(File,Realm,SQLite)&lt;==&gt;网络层(相信每个公司都有自己的网络层吧)==&gt;业务层(ViewModel)==&gt;展示层(View,VC)</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/05/24/2016-05-24-xiang-mu-jia-gou-xiao-jie-ios/#more" rel="contents">
+              Weiterlesen &raquo;
+            </a>
+          </div>
         
       
     </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/05/24/2016-05-24-xiang-mu-jia-gou-xiao-jie-ios/" data-id="cirzrhq4y00074r2hmpu1x77w" class="article-share-link">Share</a>
+
+    <div>
       
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
       
     </footer>
-  </div>
-  
-</article>
+  </article>
 
 
+    
+      
+
   
-    <article id="post-2016-03-08-swiftnet-xiang-mu-zhong-ke-zhi-jie-shi-yong-de-wang-luo-qing-qiu-ku" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/03/08/2016-03-08-swiftnet-xiang-mu-zhong-ke-zhi-jie-shi-yong-de-wang-luo-qing-qiu-ku/" class="article-date">
-  <time datetime="2016-03-08T06:39:09.000Z" itemprop="datePublished">2016-03-08</time>
-</a>
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
     
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
+      <header class="post-header">
+
         
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/03/08/2016-03-08-swiftnet-xiang-mu-zhong-ke-zhi-jie-shi-yong-de-wang-luo-qing-qiu-ku/">SwiftNet 项目中可直接使用的网络请求库</a>
-    </h1>
-  
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/03/08/2016-03-08-swiftnet-xiang-mu-zhong-ke-zhi-jie-shi-yong-de-wang-luo-qing-qiu-ku/" itemprop="url">
+                  SwiftNet 项目中可直接使用的网络请求库
+                </a>
+              
+            
+          </h1>
+        
 
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Veröffentlicht am</span>
+            <time itemprop="dateCreated" datetime="2016-03-08T14:39:09+08:00" content="2016-03-08">
+              2016-03-08
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
       </header>
     
-    <div class="article-entry" itemprop="articleBody">
+
+
+    <div class="post-body" itemprop="articleBody">
+
       
-        <p>##Request</p>
+      
+
+      
+        
+          <p>##Request</p>
 <p><a href="">GitHub</a></p>
 <p>采用链式调用配置Request</p>
 <pre><code>Request(url: &quot;https://api.github.com/users/FengDeng&quot;).method(.GET).parameters([&quot;&quot;:&quot;&quot;]).headers([&quot;&quot;:&quot;&quot;])……
@@ -139,91 +389,201 @@
         print(user.avatar_url)
 }    
 </code></pre><p>所有的闭包都可以直接抛出异常，一直走到Response的error里处理</p>
-        
-          <p class="article-more-link">
-            <a href="/2016/03/08/2016-03-08-swiftnet-xiang-mu-zhong-ke-zhi-jie-shi-yong-de-wang-luo-qing-qiu-ku/#more">Read More</a>
-          </p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/03/08/2016-03-08-swiftnet-xiang-mu-zhong-ke-zhi-jie-shi-yong-de-wang-luo-qing-qiu-ku/#more" rel="contents">
+              Weiterlesen &raquo;
+            </a>
+          </div>
         
       
     </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/03/08/2016-03-08-swiftnet-xiang-mu-zhong-ke-zhi-jie-shi-yong-de-wang-luo-qing-qiu-ku/" data-id="cirzrhq4x00064r2hgx16tm3x" class="article-share-link">Share</a>
+
+    <div>
       
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
       
     </footer>
-  </div>
-  
-</article>
+  </article>
 
 
+    
+      
+
   
-    <article id="post-2016-01-31-rxgithub-apiku-yong-fa-he-dai-ma-shuo-ming" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/01/31/2016-01-31-rxgithub-apiku-yong-fa-he-dai-ma-shuo-ming/" class="article-date">
-  <time datetime="2016-01-31T13:13:37.000Z" itemprop="datePublished">2016-01-31</time>
-</a>
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
     
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
+      <header class="post-header">
+
         
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/01/31/2016-01-31-rxgithub-apiku-yong-fa-he-dai-ma-shuo-ming/">Swift，RxSwift实现的RxGithub API库用法和代码说明</a>
-    </h1>
-  
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/01/31/2016-01-31-rxgithub-apiku-yong-fa-he-dai-ma-shuo-ming/" itemprop="url">
+                  Swift，RxSwift实现的RxGithub API库用法和代码说明
+                </a>
+              
+            
+          </h1>
+        
 
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Veröffentlicht am</span>
+            <time itemprop="dateCreated" datetime="2016-01-31T21:13:37+08:00" content="2016-01-31">
+              2016-01-31
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
       </header>
     
-    <div class="article-entry" itemprop="articleBody">
+
+
+    <div class="post-body" itemprop="articleBody">
+
       
-        <p>这是一个基于RxSwift的GitHub API库。希望给那些想写GitHub APP的同学一些方便。</p>
+      
+
+      
+        
+          <p>这是一个基于RxSwift的GitHub API库。希望给那些想写GitHub APP的同学一些方便。</p>
 <p>#RxGitHubAPI的整体设计</p>
 <p>所有的返回都设计成对象。<br>例如用户，YYUser<br>仓库，YYRepository<br>tag,YYTag<br>等等……</p>
 <p>请大家移步去clone项目看吧 <a href="https://github.com/FengDeng/RxGitHubAPI">https://github.com/FengDeng/RxGitHubAPI</a></p>
-        
-          <p class="article-more-link">
-            <a href="/2016/01/31/2016-01-31-rxgithub-apiku-yong-fa-he-dai-ma-shuo-ming/#more">Read More</a>
-          </p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/01/31/2016-01-31-rxgithub-apiku-yong-fa-he-dai-ma-shuo-ming/#more" rel="contents">
+              Weiterlesen &raquo;
+            </a>
+          </div>
         
       
     </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/01/31/2016-01-31-rxgithub-apiku-yong-fa-he-dai-ma-shuo-ming/" data-id="cirzrhq4v00054r2hs7m79yum" class="article-share-link">Share</a>
+
+    <div>
       
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
       
     </footer>
-  </div>
-  
-</article>
+  </article>
 
 
+    
+      
+
   
-    <article id="post-2016-01-29-a-github-api-by-rxswift" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/01/29/2016-01-29-a-github-api-by-rxswift/" class="article-date">
-  <time datetime="2016-01-29T07:48:36.000Z" itemprop="datePublished">2016-01-29</time>
-</a>
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
     
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
+      <header class="post-header">
+
         
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/01/29/2016-01-29-a-github-api-by-rxswift/">A GitHub API by RxSwift</a>
-    </h1>
-  
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/01/29/2016-01-29-a-github-api-by-rxswift/" itemprop="url">
+                  A GitHub API by RxSwift
+                </a>
+              
+            
+          </h1>
+        
 
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Veröffentlicht am</span>
+            <time itemprop="dateCreated" datetime="2016-01-29T15:48:36+08:00" content="2016-01-29">
+              2016-01-29
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
       </header>
     
-    <div class="article-entry" itemprop="articleBody">
+
+
+    <div class="post-body" itemprop="articleBody">
+
       
-        <p>###一个用RxSwift实现的GitHubAPI库</p>
+      
+
+      
+        
+          <p>###一个用RxSwift实现的GitHubAPI库</p>
 <p>仓库地址 <a href="https://github.com/FengDeng/RxGitHubAPI">https://github.com/FengDeng/RxGitHubAPI</a></p>
 <p>这个库还未完善，由于最近工作比较忙，刚刚实现小部分的功能。</p>
 <p>也希望大家pull request 来完善它</p>
@@ -235,92 +595,202 @@
 <li>star，unStar,checkStar等等对仓库的一些行为，请看<a href="">#YYRepository</a></li>
 <li>search Repos  和  search Users</li>
 </ol>
-        
-          <p class="article-more-link">
-            <a href="/2016/01/29/2016-01-29-a-github-api-by-rxswift/#more">Read More</a>
-          </p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/01/29/2016-01-29-a-github-api-by-rxswift/#more" rel="contents">
+              Weiterlesen &raquo;
+            </a>
+          </div>
         
       
     </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/01/29/2016-01-29-a-github-api-by-rxswift/" data-id="cirzrhq4t00044r2hj049j4od" class="article-share-link">Share</a>
+
+    <div>
       
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
       
     </footer>
-  </div>
-  
-</article>
+  </article>
 
 
+    
+      
+
   
-    <article id="post-2016-01-22-rxswift-dao-di-[?]-ge-uitextfieldshi-ru-he-he-[?]-ge-uilabelbang-ding-de" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/01/22/2016-01-22-rxswift-dao-di-[?]-ge-uitextfieldshi-ru-he-he-[?]-ge-uilabelbang-ding-de/" class="article-date">
-  <time datetime="2016-01-22T08:23:30.000Z" itemprop="datePublished">2016-01-22</time>
-</a>
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
     
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
+      <header class="post-header">
+
         
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/01/22/2016-01-22-rxswift-dao-di-[?]-ge-uitextfieldshi-ru-he-he-[?]-ge-uilabelbang-ding-de/">RxSwift源码解读之UITextField是如何和一个UILabel绑定的</a>
-    </h1>
-  
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/01/22/2016-01-22-rxswift-dao-di-[?]-ge-uitextfieldshi-ru-he-he-[?]-ge-uilabelbang-ding-de/" itemprop="url">
+                  RxSwift源码解读之UITextField是如何和一个UILabel绑定的
+                </a>
+              
+            
+          </h1>
+        
 
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Veröffentlicht am</span>
+            <time itemprop="dateCreated" datetime="2016-01-22T16:23:30+08:00" content="2016-01-22">
+              2016-01-22
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
       </header>
     
-    <div class="article-entry" itemprop="articleBody">
+
+
+    <div class="post-body" itemprop="articleBody">
+
       
-        <p>只要一行代码</p>
+      
+
+      
+        
+          <p>只要一行代码</p>
 <pre><code>writeTextField.rx_text.bindTo(displayLabel.rx_text)
 </code></pre><p>看下效果</p>
 <p><img src="https://raw.githubusercontent.com/FengDeng/Blog_Image/master/RxSwift.gif" alt="image"></p>
 <p>那么这到底是如何实现的呢</p>
-        
-          <p class="article-more-link">
-            <a href="/2016/01/22/2016-01-22-rxswift-dao-di-[?]-ge-uitextfieldshi-ru-he-he-[?]-ge-uilabelbang-ding-de/#more">Read More</a>
-          </p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/01/22/2016-01-22-rxswift-dao-di-[?]-ge-uitextfieldshi-ru-he-he-[?]-ge-uilabelbang-ding-de/#more" rel="contents">
+              Weiterlesen &raquo;
+            </a>
+          </div>
         
       
     </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/01/22/2016-01-22-rxswift-dao-di-[?]-ge-uitextfieldshi-ru-he-he-[?]-ge-uilabelbang-ding-de/" data-id="cirzrhq4s00034r2hp50im721" class="article-share-link">Share</a>
+
+    <div>
       
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
       
     </footer>
-  </div>
-  
-</article>
+  </article>
 
 
+    
+      
+
   
-    <article id="post-2016-01-13-rxswift-observablezhi-just" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/01/13/2016-01-13-rxswift-observablezhi-just/" class="article-date">
-  <time datetime="2016-01-13T01:32:34.000Z" itemprop="datePublished">2016-01-13</time>
-</a>
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
     
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
+      <header class="post-header">
+
         
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/01/13/2016-01-13-rxswift-observablezhi-just/">RxSwift Observable之Empty,Map的实现</a>
-    </h1>
-  
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/01/13/2016-01-13-rxswift-observablezhi-just/" itemprop="url">
+                  RxSwift Observable之Empty,Map的实现
+                </a>
+              
+            
+          </h1>
+        
 
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Veröffentlicht am</span>
+            <time itemprop="dateCreated" datetime="2016-01-13T09:32:34+08:00" content="2016-01-13">
+              2016-01-13
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
       </header>
     
-    <div class="article-entry" itemprop="articleBody">
+
+
+    <div class="post-body" itemprop="articleBody">
+
       
-        <p>上一节说了<a href="http://fengdeng.github.io/blog/2016/01/12/rxswiftxi-lie-zhi-observable/">Observable这个超类的设计</a>，本节内容来浅析下它的众多子类中的两个的实现</p>
+      
+
+      
+        
+          <p>上一节说了<a href="http://fengdeng.github.io/blog/2016/01/12/rxswiftxi-lie-zhi-observable/">Observable这个超类的设计</a>，本节内容来浅析下它的众多子类中的两个的实现</p>
 <p>##Empty<br>先看下一个sample</p>
 <pre><code>example(&quot;empty&quot;) {
 let emptySequence = Observable&lt;Int&gt;.empty()
@@ -339,47 +809,102 @@ Completed
     return Empty&lt;E&gt;()
 }
 </code></pre>
-        
-          <p class="article-more-link">
-            <a href="/2016/01/13/2016-01-13-rxswift-observablezhi-just/#more">Read More</a>
-          </p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/01/13/2016-01-13-rxswift-observablezhi-just/#more" rel="contents">
+              Weiterlesen &raquo;
+            </a>
+          </div>
         
       
     </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/01/13/2016-01-13-rxswift-observablezhi-just/" data-id="cirzrhq4r00024r2h85bgreob" class="article-share-link">Share</a>
+
+    <div>
       
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
       
     </footer>
-  </div>
-  
-</article>
+  </article>
 
 
+    
+      
+
   
-    <article id="post-2016-01-12-rxswiftxi-lie-zhi-observable" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/01/12/2016-01-12-rxswiftxi-lie-zhi-observable/" class="article-date">
-  <time datetime="2016-01-12T11:10:09.000Z" itemprop="datePublished">2016-01-12</time>
-</a>
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
     
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
+      <header class="post-header">
+
         
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/01/12/2016-01-12-rxswiftxi-lie-zhi-observable/">RxSwift系列之Observable</a>
-    </h1>
-  
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/01/12/2016-01-12-rxswiftxi-lie-zhi-observable/" itemprop="url">
+                  RxSwift系列之Observable
+                </a>
+              
+            
+          </h1>
+        
 
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Veröffentlicht am</span>
+            <time itemprop="dateCreated" datetime="2016-01-12T19:10:09+08:00" content="2016-01-12">
+              2016-01-12
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
       </header>
     
-    <div class="article-entry" itemprop="articleBody">
+
+
+    <div class="post-body" itemprop="articleBody">
+
       
-        <p>流，信号，阀门，水管，水珠，漏斗，等等。这些名词都被大家用到RxSwift上，应该都了解，这里就不详细说了。<br>下面简单的梳理下RxSwift中的半壁江山，<code>Observable</code></p>
+      
+
+      
+        
+          <p>流，信号，阀门，水管，水珠，漏斗，等等。这些名词都被大家用到RxSwift上，应该都了解，这里就不详细说了。<br>下面简单的梳理下RxSwift中的半壁江山，<code>Observable</code></p>
 <p><code>Observable</code> 是一个泛型类</p>
 <pre><code>public class Observable&lt;Element&gt; : ObservableType
 </code></pre><p>其实现了<code>ObservableType</code>协议</p>
@@ -388,152 +913,322 @@ Completed
     ....
 }
 </code></pre><p><code>ObservableType</code>是一个泛型协议</p>
-        
-          <p class="article-more-link">
-            <a href="/2016/01/12/2016-01-12-rxswiftxi-lie-zhi-observable/#more">Read More</a>
-          </p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/01/12/2016-01-12-rxswiftxi-lie-zhi-observable/#more" rel="contents">
+              Weiterlesen &raquo;
+            </a>
+          </div>
         
       
     </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/01/12/2016-01-12-rxswiftxi-lie-zhi-observable/" data-id="cirzrhq4i00004r2hjqrnc0kl" class="article-share-link">Share</a>
+
+    <div>
       
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
       
     </footer>
-  </div>
-  
-</article>
+  </article>
 
 
+    
+      
+
   
-    <article id="post-2015-11-20-cocoaasyncsocketyuan-ma-jie-du" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2015/11/20/2015-11-20-cocoaasyncsocketyuan-ma-jie-du/" class="article-date">
-  <time datetime="2015-11-20T08:10:24.000Z" itemprop="datePublished">2015-11-20</time>
-</a>
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
     
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
+      <header class="post-header">
+
         
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/11/20/2015-11-20-cocoaasyncsocketyuan-ma-jie-du/">CocoaAsyncSocket源码解读</a>
-    </h1>
-  
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/11/20/2015-11-20-cocoaasyncsocketyuan-ma-jie-du/" itemprop="url">
+                  CocoaAsyncSocket源码解读
+                </a>
+              
+            
+          </h1>
+        
 
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Veröffentlicht am</span>
+            <time itemprop="dateCreated" datetime="2015-11-20T16:10:24+08:00" content="2015-11-20">
+              2015-11-20
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
       </header>
     
-    <div class="article-entry" itemprop="articleBody">
+
+
+    <div class="post-body" itemprop="articleBody">
+
       
-        <p>###先看看文件结构：<br>        ├── CocoaAsyncSocket.h<br>        ├── GCD<br>        │   ├── GCDAsyncSocket.h<br>        │   ├── GCDAsyncSocket.m<br>        │   ├── GCDAsyncUdpSocket.h<br>        │   └── GCDAsyncUdpSocket.m<br>        └── RunLoop<br>            ├── AsyncSocket.h<br>            ├── AsyncSocket.m<br>            ├── AsyncUdpSocket.h<br>            └── AsyncUdpSocket.m<br>  一共9个文件</p>
+      
+
+      
+        
+          <p>###先看看文件结构：<br>        ├── CocoaAsyncSocket.h<br>        ├── GCD<br>        │   ├── GCDAsyncSocket.h<br>        │   ├── GCDAsyncSocket.m<br>        │   ├── GCDAsyncUdpSocket.h<br>        │   └── GCDAsyncUdpSocket.m<br>        └── RunLoop<br>            ├── AsyncSocket.h<br>            ├── AsyncSocket.m<br>            ├── AsyncUdpSocket.h<br>            └── AsyncUdpSocket.m<br>  一共9个文件</p>
 <p>  CocoaAsyncSocket.h没什么说的，只是import了所有的头文件。</p>
 <p>  根据作者的目录很容易可以看出来，作者提供了两套异步socket接口，一套基于<code>GCD</code>，一套基于<code>RunLoop</code>。</p>
-        
-          <p class="article-more-link">
-            <a href="/2015/11/20/2015-11-20-cocoaasyncsocketyuan-ma-jie-du/#more">Read More</a>
-          </p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/11/20/2015-11-20-cocoaasyncsocketyuan-ma-jie-du/#more" rel="contents">
+              Weiterlesen &raquo;
+            </a>
+          </div>
         
       
     </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2015/11/20/2015-11-20-cocoaasyncsocketyuan-ma-jie-du/" data-id="cirzrhq4o00014r2h1cnivkql" class="article-share-link">Share</a>
+
+    <div>
       
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
       
     </footer>
-  </div>
+  </article>
+
+
+    
+  </section>
+
   
-</article>
 
 
-  
+          </div>
+          
 
-</section>
+
+          
+
+        </div>
         
-          <aside id="sidebar">
+          
   
-    
-
-  
-    
-
-  
-    
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Archives</h3>
-    <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a></li></ul>
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
     </div>
   </div>
 
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
 
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Recent Posts</h3>
-    <div class="widget">
-      <ul>
+      
+
+      
+
+      <section class="site-overview sidebar-panel  sidebar-panel-active ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="John Doe" />
+          <p class="site-author-name" itemprop="name">John Doe</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">8</span>
+              <span class="site-state-item-name">Artikel</span>
+            </a>
+          </div>
+
+          
+
+          
+
+        </nav>
+
         
-          <li>
-            <a href="/2016/05/24/2016-05-24-xiang-mu-jia-gou-xiao-jie-ios/">小短文，也谈iOS项目架构</a>
-          </li>
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
         
-          <li>
-            <a href="/2016/03/08/2016-03-08-swiftnet-xiang-mu-zhong-ke-zhi-jie-shi-yong-de-wang-luo-qing-qiu-ku/">SwiftNet 项目中可直接使用的网络请求库</a>
-          </li>
         
-          <li>
-            <a href="/2016/01/31/2016-01-31-rxgithub-apiku-yong-fa-he-dai-ma-shuo-ming/">Swift，RxSwift实现的RxGithub API库用法和代码说明</a>
-          </li>
+
         
-          <li>
-            <a href="/2016/01/29/2016-01-29-a-github-api-by-rxswift/">A GitHub API by RxSwift</a>
-          </li>
         
-          <li>
-            <a href="/2016/01/22/2016-01-22-rxswift-dao-di-[?]-ge-uitextfieldshi-ru-he-he-[?]-ge-uilabelbang-ding-de/">RxSwift源码解读之UITextField是如何和一个UILabel绑定的</a>
-          </li>
-        
-      </ul>
+
+      </section>
+
+      
+
     </div>
-  </div>
+  </aside>
 
-  
-</aside>
+
         
       </div>
-      <footer id="footer">
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
   
-  <div class="outer">
-    <div id="footer-info" class="inner">
-      &copy; 2016 John Doe<br>
-      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+
+<div class="powered-by">
+  Erstellt mit  <a class="theme-link" href="https://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
     </div>
   </div>
-</footer>
-    </div>
-    <nav id="mobile-nav">
+
   
-    <a href="/" class="mobile-nav-link">Home</a>
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
   
-    <a href="/archives" class="mobile-nav-link">Archives</a>
+
+
+
   
-</nav>
-    
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
 
-<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
 
 
-  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
-  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+  
 
 
-<script src="/js/script.js"></script>
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
 
-  </div>
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
 </body>
 </html>
