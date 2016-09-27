@@ -4,38 +4,48 @@
   <meta charset="utf-8">
   
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
-  <title>iOS之身份证号码识别 | FengDeng的博客</title>
+  <title>Swift工程集成ReactNative | FengDeng的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="##Begin
-这里使用到两个C++的库
+  <meta name="description" content="##集成步骤
+swift2.3  OSX 10.11.6  Xcode8.0
+创建一个ReactNative工程很简单
+react-native init ProjectName
+那么如何在一个现有的Swift工程内集成ReactNative呢？
 
-OpenCV
-Tesseract
+首先在项目根目录创建一个ReactNative的文件夹
+cd ProjectRootDir
+mkdir ReactNative
 
-OpenCV在这里实现图像处理，Tesseract在这里实现数字识别">
+创建一个packag">
 <meta property="og:type" content="article">
-<meta property="og:title" content="iOS之身份证号码识别">
-<meta property="og:url" content="http://yoursite.com/2016/08/18/iOS实现身份证号码识别/index.html">
+<meta property="og:title" content="Swift工程集成ReactNative">
+<meta property="og:url" content="http://yoursite.com/2016/09/27/Swift工程集成ReactNative/index.html">
 <meta property="og:site_name" content="FengDeng的博客">
-<meta property="og:description" content="##Begin
-这里使用到两个C++的库
+<meta property="og:description" content="##集成步骤
+swift2.3  OSX 10.11.6  Xcode8.0
+创建一个ReactNative工程很简单
+react-native init ProjectName
+那么如何在一个现有的Swift工程内集成ReactNative呢？
 
-OpenCV
-Tesseract
+首先在项目根目录创建一个ReactNative的文件夹
+cd ProjectRootDir
+mkdir ReactNative
 
-OpenCV在这里实现图像处理，Tesseract在这里实现数字识别">
-<meta property="og:image" content="https://fengdeng.github.com/blogImage/00001.png">
-<meta property="og:updated_time" content="2016-08-18T09:11:39.000Z">
+创建一个packag">
+<meta property="og:updated_time" content="2016-09-27T01:58:35.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="iOS之身份证号码识别">
-<meta name="twitter:description" content="##Begin
-这里使用到两个C++的库
+<meta name="twitter:title" content="Swift工程集成ReactNative">
+<meta name="twitter:description" content="##集成步骤
+swift2.3  OSX 10.11.6  Xcode8.0
+创建一个ReactNative工程很简单
+react-native init ProjectName
+那么如何在一个现有的Swift工程内集成ReactNative呢？
 
-OpenCV
-Tesseract
+首先在项目根目录创建一个ReactNative的文件夹
+cd ProjectRootDir
+mkdir ReactNative
 
-OpenCV在这里实现图像处理，Tesseract在这里实现数字识别">
-<meta name="twitter:image" content="https://fengdeng.github.com/blogImage/00001.png">
+创建一个packag">
   
     <link rel="alternative" href="/atom.xml" title="FengDeng的博客" type="application/atom+xml">
   
@@ -196,11 +206,11 @@ OpenCV在这里实现图像处理，Tesseract在这里实现数字识别">
 	</div>
 </nav>
 
-      <div class="body-wrap"><article id="post-iOS实现身份证号码识别" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-Swift工程集成ReactNative" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2016/08/18/iOS实现身份证号码识别/" class="article-date">
-  	<time datetime="2016-08-18T08:32:35.000Z" itemprop="datePublished">2016-08-18</time>
+      <a href="/2016/09/27/Swift工程集成ReactNative/" class="article-date">
+  	<time datetime="2016-09-27T01:37:49.000Z" itemprop="datePublished">2016-09-27</time>
 </a>
     </div>
   
@@ -213,7 +223,7 @@ OpenCV在这里实现图像处理，Tesseract在这里实现数字识别">
         
   
     <h1 class="article-title" itemprop="name">
-      iOS之身份证号码识别
+      Swift工程集成ReactNative
     </h1>
   
 
@@ -229,98 +239,62 @@ OpenCV在这里实现图像处理，Tesseract在这里实现数字识别">
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>##Begin</p>
-<p>这里使用到两个C++的库</p>
+        <p>##集成步骤</p>
+<pre><code>swift2.3  OSX 10.11.6  Xcode8.0
+</code></pre><p>创建一个ReactNative工程很简单</p>
+<pre><code>react-native init ProjectName
+</code></pre><p>那么如何在一个现有的Swift工程内集成ReactNative呢？</p>
 <ol>
-<li>OpenCV</li>
-<li>Tesseract</li>
+<li><p>首先在项目根目录创建一个ReactNative的文件夹</p>
+<pre><code>cd ProjectRootDir
+mkdir ReactNative
+</code></pre></li>
+<li><p>创建一个package.json,注意，这里选用0.30.0版本，最新的0.33.0版本集成后会有问题，具体的问题可以去ReactNative的issue上去看。</p>
+<pre><code>{
+      &quot;dependencies&quot;: {
+            &quot;react&quot;: &quot;15.2.0&quot;,
+        &quot;react-native&quot;: &quot;0.30.0&quot;
+      }
+}
+</code></pre></li>
+<li><p>加载node_modules</p>
+<pre><code>cd ReactNative
+npm install
+</code></pre></li>
+<li><p>加载成功后在你的Podfile文件里加上这几句</p>
+<pre><code>pod &apos;React&apos;, :path =&gt; &apos;./ReactNative/node_modules/react-native&apos;, :subspecs =&gt; [
+&apos;Core&apos;,
+&apos;RCTImage&apos;,
+&apos;RCTNetwork&apos;,
+&apos;RCTText&apos;,
+&apos;RCTWebSocket&apos;,
+]
+</code></pre></li>
+<li><p>最后</p>
+<pre><code>pod install
+</code></pre></li>
+<li><p>编译通过 大功告成</p>
+</li>
 </ol>
-<p><code>OpenCV</code>在这里实现图像处理，<code>Tesseract</code>在这里实现数字识别</p>
-<a id="more"></a>
-<p>先上效果图：隐私打码谢谢</p>
-<p><img src="https://fengdeng.github.com/blogImage/00001.png" alt=""></p>
-<p>###0x00 获取视频流</p>
-<p>iOS里获取视频流比较简单，当然OpenCV里也有这功能，这里只说前一种。大家可以直接搜 <code>AVCaptureSession</code>，这里我就直接上代码了。</p>
-<p>在回调里获取到图片，并且转化为UIImage</p>
-<pre><code>-(void)captureOutput:(AVCaptureOutput *)captureOutput didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer fromConnection:(AVCaptureConnection *)connection{
-    CVImageBufferRef ref = CMSampleBufferGetImageBuffer(sampleBuffer);
-    CIImage* ciImage = [[CIImage alloc]initWithCVPixelBuffer:ref];
-    CIContext *context = [CIContext contextWithOptions:nil];
-    CGImageRef cgImage = [context createCGImage:ciImage fromRect:[ciImage extent]];
-    UIImage * image = [[UIImage alloc]initWithCGImage:cgImage];
-    CGImageRelease(cgImage);
-}
-</code></pre><p>###0x01 OpenCV处理图片<br>集成OpenCV的方法很简单，直接使用Cocospod就可以了。</p>
-<pre><code>pod &apos;OpenCV&apos;, &apos;~&gt; 3.0.0&apos;
-</code></pre><p><a href="http://opencv.org" target="_blank" rel="external">OpenCV地址</a></p>
-<p>这里说下主要的对身份证的处理</p>
-<ul>
-<li><p>灰度图</p>
-<pre><code>cvtColor(dst, dst, COLOR_BGR2GRAY);
-</code></pre></li>
-<li><p>二值化</p>
-<pre><code>threshold(dst, dst, 80, 255, THRESH_BINARY);
-</code></pre></li>
-<li><p>腐蚀</p>
-<pre><code>erode(dst,dst,Mat(27,27,CV_8U),Point(-1,-1),2);
-</code></pre></li>
-<li><p>轮廓检测</p>
-<pre><code>Mat c = dst.clone();
-vector&lt;vector&lt;Point&gt;&gt; contours;
-findContours(c, contours, CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE,cvPoint(0, 0));
-//除去太长或者太短的轮廓
-int cmin = 35;
-int cmax = 800;
-vector&lt;std::vector&lt;cv::Point&gt;&gt;::iterator itc = contours.begin();
-while(itc != contours.end())
-{
-    Rect rect = boundingRect(*itc);
-
-    if(itc-&gt;size() &lt; cmin || itc-&gt;size() &gt; cmax || rect.width &lt; 40 || rect.height &lt; 40){
-        //std::cout &lt;&lt; &quot;EraseSize: &quot; &lt;&lt; itc-&gt;size() &lt;&lt; std::endl;
-        itc = contours.erase(itc);
-        }
-    else{
-        ++itc;};
-
-}
-</code></pre></li>
-<li><p>取出身份证号码区域</p>
-<pre><code>vector&lt;Rect&gt; rects;
-Rect rr = Rect(0,0,0,0);
-std::vector&lt;std::vector&lt;cv::Point&gt;&gt;::const_iterator itContours = contours.begin();
-for ( ; itContours!=contours.end(); ++itContours){
-    Rect rect = boundingRect(*itContours);
-    rects.push_back(rect);
-    //std::cout &lt;&lt; &quot;Size: &quot; &lt;&lt; rect &lt;&lt; std::endl;
-    if (rect.width &gt; rr.width &amp;&amp; rect.width &gt; rect.height * 5) {
-        rr = rect;
-    }
-}
-</code></pre></li>
-</ul>
-<p>###0x02 Tesseract进行数字识别</p>
-<p>集成OpenCV的方法也很简单，直接使用了别人封装好的一个库，当然也可以自己编译直接使用C++的。</p>
-<pre><code>pod &apos;TesseractOCRiOS&apos;, &apos;~&gt; 4.0.0&apos;
-</code></pre><p><a href="https://github.com/gali8/Tesseract-OCR-iOS" target="_blank" rel="external">GitHub地址</a></p>
-<p>直接识别</p>
-<pre><code>self.tesseract = [[G8Tesseract alloc] initWithLanguage:@&quot;chi_sim&quot;];
-
-tesseract.charWhitelist = @&quot;0123456789&quot;;
-
-self.tesseract.image = [i g8_blackAndWhite];
-
-  // Optional: Limit the area of the image Tesseract should recognize on to a rectangle
-self.tesseract.rect = CGRectMake(0, 0, i.size.width, i.size.height);
-
-  // Optional: Limit recognition time with a few seconds
-self.tesseract.maximumRecognitionTime = 2.0;
-
-  // Start the recognition
-[self.tesseract recognize];
-
-  // Retrieve the recognized text
-NSLog(@&quot;识别:%@&quot;, [self.tesseract recognizedText]);
+<p>##一些技巧</p>
+<ol>
+<li>如何在工程编译运行的时候自动启动Server呢？</li>
+</ol>
+<p>在Xcode的run script里添加如下shell</p>
+<pre><code>if nc -w 5 -z localhost 8081 ; then
+if ! curl -s &quot;http://localhost:8081/status&quot; | grep -q &quot;packager-status:running&quot; ; then
+echo &quot;Port 8081 already in use, packager is either not running or not running correctly&quot;
+exit 2
+fi
+else
+open $SRCROOT/ReactNative/node_modules/react-native/packager/launchPackager.command ||     echo &quot;Can&apos;t start packager automatically&quot;
+fi
+</code></pre><ol>
+<li>如何在真机运行时自动打包main.jsbundle呢</li>
+</ol>
+<p>在Xcode的run script里添加如下shell</p>
+<pre><code>export NODE_BINARY=node
+sh $SRCROOT/ReactNative/node_modules/react-native/packager/react-native-xcode.sh    
 </code></pre>
       
     </div>
@@ -330,18 +304,9 @@ NSLog(@&quot;识别:%@&quot;, [self.tesseract recognizedText]);
     
 <nav id="article-nav">
   
-    <a href="/2016/09/27/Swift工程集成ReactNative/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption"><</strong>
-      <div class="article-nav-title">
-        
-          Swift工程集成ReactNative
-        
-      </div>
-    </a>
   
-  
-    <a href="/2016/05/24/2016-05-24-xiang-mu-jia-gou-xiao-jie-ios/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">小短文，也谈iOS项目架构</div>
+    <a href="/2016/08/18/iOS实现身份证号码识别/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">iOS之身份证号码识别</div>
       <strong class="article-nav-caption">></strong>
     </a>
   
@@ -376,7 +341,7 @@ NSLog(@&quot;识别:%@&quot;, [self.tesseract recognizedText]);
 
 <div class="duoshuo">
 	<!-- 多说评论框 start -->
-	<div class="ds-thread" data-thread-key="iOS实现身份证号码识别" data-title="iOS之身份证号码识别" data-url="http://yoursite.com/2016/08/18/iOS实现身份证号码识别/"></div>
+	<div class="ds-thread" data-thread-key="Swift工程集成ReactNative" data-title="Swift工程集成ReactNative" data-url="http://yoursite.com/2016/09/27/Swift工程集成ReactNative/"></div>
 	<!-- 多说评论框 end -->
 	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
 	<script type="text/javascript">

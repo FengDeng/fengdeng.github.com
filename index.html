@@ -174,6 +174,114 @@
 
       <div class="body-wrap">
   
+    <article id="post-Swift工程集成ReactNative" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/09/27/Swift工程集成ReactNative/" class="article-date">
+  	<time datetime="2016-09-27T01:37:49.000Z" itemprop="datePublished">2016-09-27</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/09/27/Swift工程集成ReactNative/">Swift工程集成ReactNative</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>##集成步骤</p>
+<pre><code>swift2.3  OSX 10.11.6  Xcode8.0
+</code></pre><p>创建一个ReactNative工程很简单</p>
+<pre><code>react-native init ProjectName
+</code></pre><p>那么如何在一个现有的Swift工程内集成ReactNative呢？</p>
+<ol>
+<li><p>首先在项目根目录创建一个ReactNative的文件夹</p>
+<pre><code>cd ProjectRootDir
+mkdir ReactNative
+</code></pre></li>
+<li><p>创建一个package.json,注意，这里选用0.30.0版本，最新的0.33.0版本集成后会有问题，具体的问题可以去ReactNative的issue上去看。</p>
+<pre><code>{
+      &quot;dependencies&quot;: {
+            &quot;react&quot;: &quot;15.2.0&quot;,
+        &quot;react-native&quot;: &quot;0.30.0&quot;
+      }
+}
+</code></pre></li>
+<li><p>加载node_modules</p>
+<pre><code>cd ReactNative
+npm install
+</code></pre></li>
+<li><p>加载成功后在你的Podfile文件里加上这几句</p>
+<pre><code>pod &apos;React&apos;, :path =&gt; &apos;./ReactNative/node_modules/react-native&apos;, :subspecs =&gt; [
+&apos;Core&apos;,
+&apos;RCTImage&apos;,
+&apos;RCTNetwork&apos;,
+&apos;RCTText&apos;,
+&apos;RCTWebSocket&apos;,
+]
+</code></pre></li>
+<li><p>最后</p>
+<pre><code>pod install
+</code></pre></li>
+<li><p>编译通过 大功告成</p>
+</li>
+</ol>
+<p>##一些技巧</p>
+<ol>
+<li>如何在工程编译运行的时候自动启动Server呢？</li>
+</ol>
+<p>在Xcode的run script里添加如下shell</p>
+<pre><code>if nc -w 5 -z localhost 8081 ; then
+if ! curl -s &quot;http://localhost:8081/status&quot; | grep -q &quot;packager-status:running&quot; ; then
+echo &quot;Port 8081 already in use, packager is either not running or not running correctly&quot;
+exit 2
+fi
+else
+open $SRCROOT/ReactNative/node_modules/react-native/packager/launchPackager.command ||     echo &quot;Can&apos;t start packager automatically&quot;
+fi
+</code></pre><ol>
+<li>如何在真机运行时自动打包main.jsbundle呢</li>
+</ol>
+<p>在Xcode的run script里添加如下shell</p>
+<pre><code>export NODE_BINARY=node
+sh $SRCROOT/ReactNative/node_modules/react-native/packager/react-native-xcode.sh    
+</code></pre>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
     <article id="post-iOS实现身份证号码识别" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
